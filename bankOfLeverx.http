@@ -1,0 +1,6 @@
+@bankOfLeverx_HostAddress = http://localhost:5161
+
+GET {{bankOfLeverx_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
