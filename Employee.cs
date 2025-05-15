@@ -5,7 +5,7 @@ namespace bankOfLeverx
         public required string Name { get; set; }
 
         public required string Surname { get; set; }
-        public required int ID { get; set; }
+        public required int Key { get; set; }
 
         public required string Position { get; set; }
 

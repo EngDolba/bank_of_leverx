@@ -19,13 +19,18 @@ namespace bankOfLeverx.Controllers
             _logger = logger;
 
         }
-
+        ///<summary>GET method to get all the customers</summary>
+        ///
+        ///<returns>all the customers</returns> 
         [HttpGet(Name ="GetCustomers")]
         public IEnumerable<Customer> get()
         {
             return Customers;
         }
 
+        ///<summary>GET method to get one customer with its id</summary>
+        ///<param name="customerKey"></param>
+        ///<returns>the customer with the given id</returns> 
         [HttpGet("{customerKey}", Name = "GetCustomer")]
         public ActionResult<Customer> Get(int customerKey)
         {
@@ -36,7 +41,9 @@ namespace bankOfLeverx.Controllers
             }
             return Ok(customer);
         }
-
+        ///<summary>POST method to add one customer</summary>
+        ///<param name="customer"></param>
+        ///<returns>added customer including its id</returns> 
         [HttpPost(Name = "PostCustomer")]
         public ActionResult<Customer> Post([FromBody] CustomerDTO customer)
         { 
@@ -50,8 +57,13 @@ namespace bankOfLeverx.Controllers
                 Branch = customer.Branch
             };
             Customers.Add(cust);
-            return Ok(customer);
+            return Ok(cust);
         }
+
+        ///<summary>PATCH method to change one customer</summary>
+        ///<param name="customerKey"></param>
+        ///<param name="customer"></param>
+        ///<returns>changed customer with all fields</returns> 
         [HttpPatch("{customerKey}",Name ="PatchCustomer")] 
         public ActionResult<Customer> patch(int customerKey, [FromBody] CustomerPatchDto customer)
         {

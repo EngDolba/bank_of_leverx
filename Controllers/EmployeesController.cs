@@ -14,7 +14,7 @@ namespace bankOfLeverx.Controllers
 
         private static int initialEmployeeSize = 3;
 
-        private static int currentlEmployeeId = 1000;
+        private static int currentEmployeeKey = 1000;
 
         private static readonly List<Employee> Employees = new List<Employee>();
 
@@ -28,58 +28,68 @@ namespace bankOfLeverx.Controllers
 
                 Employees.Add(new Employee
                 {
-                    ID = currentlEmployeeId+1,
+                    Key = currentEmployeeKey+1,
                     Name = Names[initialEmployeeSize - 1],
                     Surname = Surnames[initialEmployeeSize - 1],
                     Position = Positions[initialEmployeeSize - 1],
                     Branch = "HDOF" // "Head Office"
                 });
-                currentlEmployeeId++;
+                currentEmployeeKey++;
                 initialEmployeeSize--;
             }
 
             _logger = logger;
         }
-
-         [HttpGet("{employeeId}", Name = "GetEmployee")]
-        public ActionResult<Employee> Get(int employeeId)
+        ///<summary>change one employee</summary>
+        ///<param name="employeeKey"></param>
+        ///<returns>employee with given Key</returns> 
+        [HttpGet("{employeeKey}", Name = "GetEmployee")]
+        public ActionResult<Employee> Get(int employeeKey)
         {
-            var employee = Employees.FirstOrDefault(e => e.ID == employeeId);
+            var employee = Employees.FirstOrDefault(e => e.Key == employeeKey);
             if (employee == null)
             {
-                return NotFound($"Employee with ID {employeeId} not found.");
+                return NotFound($"Employee with Key {employeeKey} not found.");
             }
             return Ok(employee);
         }
 
+        ///<summary>GET method to get all the employees</summary>
+        ///<returns>all the employees</returns> 
         [HttpGet(Name = "GetEmployees")]
         public IEnumerable<Employee> get()
         {
             return Employees;
         }
 
-        [HttpPut(Name = "PutEmployee")]
-        public IActionResult put([FromBody] EmployeeDTO emp)
+        ///<summary>POST method to add one employee</summary>
+        ///<returns>added employee with its Key</returns> 
+        [HttpPost(Name = "PostEmployee")]
+        public IActionResult post([FromBody] EmployeeDTO emp)
         {
             Employees.Add(new Employee
             {
-                ID = currentlEmployeeId + 1,
+                Key = currentEmployeeKey + 1,
                 Name = emp.Name,
                 Surname = emp.Surname,
                 Position = emp.Position,
                 Branch = emp.Branch
             });
-            currentlEmployeeId++;
-            return Ok(Employees.FirstOrDefault(e => e.ID == currentlEmployeeId));
+            currentEmployeeKey++;
+            return Ok(Employees.FirstOrDefault(e => e.Key == currentEmployeeKey));
         }
+        ///<summary>PATCH method to change one employee</summary>
+        ///<param name="employeeKey"></param>
+        ///<param name="employeePatch"></param>
+        ///<returns>changed customer with all fields</returns> 
+        [HttpPatch("{employeeKey}")] 
 
-        [HttpPatch("{employeeId}")]
-        public IActionResult Patch(int employeeId, [FromBody] EmployeePatchDTO employeePatch)
+        public ActionResult Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
         {
-            var employee = Employees.FirstOrDefault(e => e.ID == employeeId);
+            var employee = Employees.FirstOrDefault(e => e.Key == employeeKey);
             if (employee == null)
             {
-                return NotFound($"Employee with ID {employeeId} not found.");
+                return NotFound($"Employee with Key {employeeKey} not found.");
             }
 
             if (employeePatch.Name != null)
