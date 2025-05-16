@@ -40,7 +40,7 @@ namespace bankOfLeverx.Controllers
 
             _logger = logger;
         }
-        ///<summary>change one employee</summary>
+        ///<summary>GET method to get one employee</summary>
         ///<param name="employeeKey"></param>
         ///<returns>employee with given Key</returns> 
         [HttpGet("{employeeKey}", Name = "GetEmployee")]
@@ -81,8 +81,8 @@ namespace bankOfLeverx.Controllers
         ///<summary>PATCH method to change one employee</summary>
         ///<param name="employeeKey"></param>
         ///<param name="employeePatch"></param>
-        ///<returns>changed customer with all fields</returns> 
-        [HttpPatch("{employeeKey}")] 
+        ///<returns>changed employee with all fields</returns> 
+        [HttpPatch("{employeeKey}")]
 
         public ActionResult Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
         {
@@ -105,6 +105,21 @@ namespace bankOfLeverx.Controllers
                 employee.Branch = employeePatch.Branch;
 
             return Ok(employee);
+        }
+
+        ///<summary>DELETE method to delete one employee</summary>
+        ///<param name="employeeKey"></param>
+        ///<returns>only status code of action </returns>
+        [HttpDelete("{employeeKey}", Name = "deleteEmployee")]
+        public IActionResult delete(int employeeKey)
+        {
+            Employee cust = Employees.FirstOrDefault(e => e.Key == employeeKey);
+            if (cust == null)
+            {
+                return NotFound($"Employee with key: {employeeKey} not found");
+            }
+            Employees.Remove(cust);
+            return Ok($"Employee with key: {employeeKey} deleted");
         }
 
 

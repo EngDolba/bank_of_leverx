@@ -7,11 +7,11 @@ namespace bankOfLeverx.Controllers
     [Route("[controller]")]
     public class CustomersController : Controller
     {
-        private  readonly ILogger<CustomersController> _logger;
+        private readonly ILogger<CustomersController> _logger;
 
-        private  static int currentKey = 1000;
+        private static int currentKey = 1000;
 
-        private static  List<Customer> Customers = new List<Customer>();    
+        private static List<Customer> Customers = new List<Customer>();
 
 
         public CustomersController(ILogger<CustomersController> logger)
@@ -22,7 +22,7 @@ namespace bankOfLeverx.Controllers
         ///<summary>GET method to get all the customers</summary>
         ///
         ///<returns>all the customers</returns> 
-        [HttpGet(Name ="GetCustomers")]
+        [HttpGet(Name = "GetCustomers")]
         public IEnumerable<Customer> get()
         {
             return Customers;
@@ -46,8 +46,8 @@ namespace bankOfLeverx.Controllers
         ///<returns>added customer including its id</returns> 
         [HttpPost(Name = "PostCustomer")]
         public ActionResult<Customer> Post([FromBody] CustomerDTO customer)
-        { 
-            
+        {
+
             Customer cust = new Customer
             {
                 Key = currentKey++,
@@ -64,13 +64,13 @@ namespace bankOfLeverx.Controllers
         ///<param name="customerKey"></param>
         ///<param name="customer"></param>
         ///<returns>changed customer with all fields</returns> 
-        [HttpPatch("{customerKey}",Name ="PatchCustomer")] 
+        [HttpPatch("{customerKey}", Name = "PatchCustomer")]
         public ActionResult<Customer> patch(int customerKey, [FromBody] CustomerPatchDto customer)
         {
             Customer cust = Customers.FirstOrDefault(e => e.Key == customerKey);
             if (cust == null)
             {
-                return NotFound($"Customer with Key {customerKey} not found."); 
+                return NotFound($"Customer with Key {customerKey} not found.");
             }
             if (customer.Name != null)
             {
@@ -90,6 +90,20 @@ namespace bankOfLeverx.Controllers
             }
             return Ok(cust);
 
+        }
+
+        ///<summary>DELETE method to delete one customer</summary>
+        ///<param name="customerKey"></param>
+        ///<returns>only status code</returns>
+        [HttpDelete("{customerKey}", Name = "deleteCustomer")]
+        public IActionResult delete(int customerKey)
+        {
+            Customer cust = Customers.FirstOrDefault(e => e.Key == customerKey);
+            if (cust == null) {
+                return NotFound($"customer with key: {customerKey} not found");
+            }
+            Customers.Remove(cust);
+            return Ok($"customer with key: {customerKey} deleted");
         }
         
     }
