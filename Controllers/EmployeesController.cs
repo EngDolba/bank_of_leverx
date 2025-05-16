@@ -1,3 +1,4 @@
+using bankOfLeverx.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bankOfLeverx.Controllers
@@ -82,7 +83,7 @@ namespace bankOfLeverx.Controllers
         ///<param name="employeeKey"></param>
         ///<param name="employeePatch"></param>
         ///<returns>changed employee with all fields</returns> 
-        [HttpPatch("{employeeKey}")]
+        [HttpPatch("{employeeKey}",Name = "PatchEmployee")]
 
         public ActionResult Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
         {
@@ -107,10 +108,29 @@ namespace bankOfLeverx.Controllers
             return Ok(employee);
         }
 
+        ///<summary>PUT method to change one employee</summary>
+        ///<param name="employeeKey"></param>
+        ///<param name="employee"></param>
+        ///<returns>changed EMployee with all fields</returns>
+        [HttpPut("{employeeKey}",Name = "PutEmployee")]
+        public ActionResult<Employee> Put(int employeeKey, [FromBody] EmployeeDTO employee)
+        {
+            var emp = Employees.FirstOrDefault(e => e.Key == employeeKey);
+            if (emp == null)
+            {
+                return NotFound($"Employee with Key {employeeKey} not found.");
+            }
+            emp.Name = employee.Name;
+            emp.Surname = employee.Surname;
+            emp.Position = employee.Position;
+            emp.Branch = employee.Branch;
+            return Ok(emp);
+        }
+
         ///<summary>DELETE method to delete one employee</summary>
         ///<param name="employeeKey"></param>
         ///<returns>only status code of action </returns>
-        [HttpDelete("{employeeKey}", Name = "deleteEmployee")]
+        [HttpDelete("{employeeKey} ", Name = "deleteEmployee")]
         public IActionResult delete(int employeeKey)
         {
             Employee cust = Employees.FirstOrDefault(e => e.Key == employeeKey);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using bankOfLeverx.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace bankOfLeverx.Controllers
@@ -57,6 +58,25 @@ namespace bankOfLeverx.Controllers
                 Branch = customer.Branch
             };
             Customers.Add(cust);
+            return Ok(cust);
+        }
+
+        ///<summary>PUT method to change one Customer</summary>
+        ///<param name="CustomerKey"></param>
+        ///<param name="Customer"></param>
+        ///<returns>changed Customer with all fields</returns>
+        [HttpPut("{CustomerKey}", Name = "PutCustomer")]
+        public ActionResult<Customer> put(int CustomerKey, [FromBody] CustomerDTO Customer)
+        {
+            Customer cust = Customers.FirstOrDefault(e => e.Key == CustomerKey);
+            if (cust == null)
+            {
+                return NotFound($"Customer with Key {CustomerKey} not found.");
+            }
+            cust.Name = Customer.Name;
+            cust.Surname = Customer.Surname;
+            cust.Category = Customer.Category;
+            cust.Branch = Customer.Branch;
             return Ok(cust);
         }
 

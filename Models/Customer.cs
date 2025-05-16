@@ -1,4 +1,4 @@
-namespace bankOfLeverx
+namespace bankOfLeverx.Models
 {
     public class Customer
     {
