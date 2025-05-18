@@ -61,8 +61,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PUT method to change one Customer</summary>
-        ///<param name="customerKey">unique key of customer</param>
-        ///<param name="customer">customer object without key</param>
+        ///<param name="CustomerKey">unique key of customer</param>
+        ///<param name="Customer">customer object without key</param>
         ///<returns>changed Customer with all fields</returns>
         [HttpPut("{CustomerKey}", Name = "PutCustomer")]
         public ActionResult<Customer> put(int CustomerKey, [FromBody] CustomerDTO Customer)
