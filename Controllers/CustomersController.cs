@@ -21,7 +21,6 @@ namespace bankOfLeverx.Controllers
 
         }
         ///<summary>GET method to get all the customers</summary>
-        ///
         ///<returns>all the customers</returns> 
         [HttpGet(Name = "GetCustomers")]
         public IEnumerable<Customer> get()
@@ -30,7 +29,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>GET method to get one customer with its id</summary>
-        ///<param name="customerKey"></param>
+        ///<param name="customerKey">unique key of customer</param>
         ///<returns>the customer with the given id</returns> 
         [HttpGet("{customerKey}", Name = "GetCustomer")]
         public ActionResult<Customer> Get(int customerKey)
@@ -43,7 +42,7 @@ namespace bankOfLeverx.Controllers
             return Ok(customer);
         }
         ///<summary>POST method to add one customer</summary>
-        ///<param name="customer"></param>
+        ///<param name="customer">customer object without key</param>
         ///<returns>added customer including its id</returns> 
         [HttpPost(Name = "PostCustomer")]
         public ActionResult<Customer> Post([FromBody] CustomerDTO customer)
@@ -62,8 +61,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PUT method to change one Customer</summary>
-        ///<param name="CustomerKey"></param>
-        ///<param name="Customer"></param>
+        ///<param name="customerKey">unique key of customer</param>
+        ///<param name="customer">customer object without key</param>
         ///<returns>changed Customer with all fields</returns>
         [HttpPut("{CustomerKey}", Name = "PutCustomer")]
         public ActionResult<Customer> put(int CustomerKey, [FromBody] CustomerDTO Customer)
@@ -81,8 +80,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PATCH method to change one customer</summary>
-        ///<param name="customerKey"></param>
-        ///<param name="customer"></param>
+        ///<param name="customerKey">unique key of customer</param>
+        ///<param name="customer">customer object without key</param>
         ///<returns>changed customer with all fields</returns> 
         [HttpPatch("{customerKey}", Name = "PatchCustomer")]
         public ActionResult<Customer> patch(int customerKey, [FromBody] CustomerPatchDto customer)
@@ -113,7 +112,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>DELETE method to delete one customer</summary>
-        ///<param name="customerKey"></param>
+        ///<param name="customerKey">unique key of customer</param>
         ///<returns>only status code</returns>
         [HttpDelete("{customerKey}", Name = "deleteCustomer")]
         public IActionResult delete(int customerKey)

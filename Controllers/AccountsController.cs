@@ -21,7 +21,6 @@ namespace bankOfLeverx.Controllers
 
         }
         ///<summary>GET method to get all the Accounts</summary>
-        ///
         ///<returns>all the Accounts</returns> 
         [HttpGet(Name = "GetAccounts")]
         public IEnumerable<Account> get()
@@ -30,7 +29,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>GET method to get one Account with its id</summary>
-        ///<param name="AccountKey"></param>
+        ///<param name="AccountKey">unique key of account</param>
         ///<returns>the Account with the given id</returns> 
         [HttpGet("{AccountKey}", Name = "GetAccount")]
         public ActionResult<Account> Get(int AccountKey)
@@ -43,7 +42,7 @@ namespace bankOfLeverx.Controllers
             return Ok(Account);
         }
         ///<summary>POST method to add one Account</summary>
-        ///<param name="Account"></param>
+        ///<param name="Account">account object without key</param>
         ///<returns>added Account including its id</returns> 
         [HttpPost(Name = "PostAccount")]
         public ActionResult<Account> Post([FromBody] AccountDTO Account)
@@ -63,8 +62,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PATCH method to change one Account</summary>
-        ///<param name="AccountKey"></param>
-        ///<param name="Account"></param>
+        ///<param name="AccountKey">unique key of account</param>
+        ///<param name="Account">account object without key</param>
         ///<returns>changed Account with all fields</returns> 
         [HttpPatch("{AccountKey}", Name = "PatchAccount")]
         public ActionResult<Account> patch(int AccountKey, [FromBody] AccountPatchDTO Account)
@@ -99,8 +98,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PUT method to change one Account</summary>
-        ///<param name="AccountKey"></param>
-        ///<param name="Account"></param>
+        ///<param name="AccountKey">unique key of account</param>
+        ///<param name="Account">account object without key</param>
         ///<returns>changed Account with all fields</returns>
         [HttpPut("{AccountKey}", Name = "PutAccount")]
         public ActionResult<Account> put(int AccountKey, [FromBody] AccountDTO Account)
@@ -118,7 +117,7 @@ namespace bankOfLeverx.Controllers
             return Ok(acc);
         }
         ///<summary>DELETE method to delete one Account</summary>
-        ///<param name="AccountKey"></param>
+        ///<param name="AccountKey">unique key of account</param>
         ///<returns>only status code</returns>
         [HttpDelete("{AccountKey}", Name = "deleteAccount")]
         public IActionResult delete(int AccountKey)

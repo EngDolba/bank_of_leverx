@@ -30,7 +30,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>GET method to get one Transaction with its id</summary>
-        ///<param name="TransactionKey"></param>
+        ///<param name="TransactionKey">unique key of transaction</param>
         ///<returns>the Transaction with the given id</returns> 
         [HttpGet("{TransactionKey}", Name = "GetTransaction")]
         public ActionResult<Transaction> Get(int TransactionKey)
@@ -43,7 +43,7 @@ namespace bankOfLeverx.Controllers
             return Ok(Transaction);
         }
         ///<summary>POST method to add one Transaction</summary>
-        ///<param name="Transaction"></param>
+        ///<param name="Transaction">transaction object without key</param>
         ///<returns>added Transaction including its id</returns> 
         [HttpPost(Name = "PostTransaction")]
         public ActionResult<Transaction> Post([FromBody] TransactionDTO Transaction)
@@ -65,8 +65,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PATCH method to change one Transaction</summary>
-        ///<param name="TransactionKey"></param>
-        ///<param name="Transaction"></param>
+        ///<param name="TransactionKey">unique key of transaction</param>
+        ///<param name="Transaction">transaction object without key</param>
         ///<returns>changed Transaction with all fields</returns> 
         [HttpPatch("{TransactionKey}", Name = "PatchTransaction")]
         public ActionResult<Transaction> patch(int TransactionKey, [FromBody] TransactionPatchDTO Transaction)
@@ -102,8 +102,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PUT method to change one Transaction</summary>
-        ///<param name="TransactionKey"></param>
-        ///<param name="Transaction"></param>
+        ///<param name="TransactionKey">unique key of transaction</param>
+        ///<param name="Transaction">transaction object without key</param>
         ///<returns>changed Transaction with all fields</returns>
         [HttpPut("{TransactionKey}", Name = "PutTransaction")]
         public ActionResult<Transaction> put(int TransactionKey, [FromBody] TransactionDTO Transaction)
@@ -122,7 +122,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>DELETE method to delete one Transaction</summary>
-        ///<param name="TransactionKey"></param>
+        ///<param name="TransactionKey">unique key of transaction</param>
         ///<returns>only status code</returns>
         [HttpDelete("{TransactionKey}", Name = "deleteTransaction")]
         public IActionResult delete(int TransactionKey)

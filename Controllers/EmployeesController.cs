@@ -42,7 +42,7 @@ namespace bankOfLeverx.Controllers
             _logger = logger;
         }
         ///<summary>GET method to get one employee</summary>
-        ///<param name="employeeKey"></param>
+        ///<param name="employeeKey">unique key of employee</param>
         ///<returns>employee with given Key</returns> 
         [HttpGet("{employeeKey}", Name = "GetEmployee")]
         public ActionResult<Employee> Get(int employeeKey)
@@ -64,6 +64,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>POST method to add one employee</summary>
+        ///<param name="emp">employee object without key</param>
         ///<returns>added employee with its Key</returns> 
         [HttpPost(Name = "PostEmployee")]
         public IActionResult post([FromBody] EmployeeDTO emp)
@@ -80,8 +81,8 @@ namespace bankOfLeverx.Controllers
             return Ok(Employees.FirstOrDefault(e => e.Key == currentEmployeeKey));
         }
         ///<summary>PATCH method to change one employee</summary>
-        ///<param name="employeeKey"></param>
-        ///<param name="employeePatch"></param>
+        ///<param name="employeeKey">unique key of employee</param>
+        ///<param name="employeePatch">employee object only with fields that should be changed</param>
         ///<returns>changed employee with all fields</returns> 
         [HttpPatch("{employeeKey}",Name = "PatchEmployee")]
 
@@ -109,8 +110,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PUT method to change one employee</summary>
-        ///<param name="employeeKey"></param>
-        ///<param name="employee"></param>
+        ///<param name="employeeKey">unique key of employee</param>
+        ///<param name="employee">employee object without key</param>
         ///<returns>changed EMployee with all fields</returns>
         [HttpPut("{employeeKey}",Name = "PutEmployee")]
         public ActionResult<Employee> Put(int employeeKey, [FromBody] EmployeeDTO employee)
@@ -128,7 +129,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>DELETE method to delete one employee</summary>
-        ///<param name="employeeKey"></param>
+        ///<param name="employeeKey">unique key of employee</param>
         ///<returns>only status code of action </returns>
         [HttpDelete("{employeeKey} ", Name = "deleteEmployee")]
         public IActionResult delete(int employeeKey)

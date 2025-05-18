@@ -30,7 +30,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>GET method to get one Loan with its id</summary>
-        ///<param name="LoanKey"></param>
+        ///<param name="LoanKey">unique identifier of loan</param>
         ///<returns>the Loan with the given id</returns> 
         [HttpGet("{LoanKey}", Name = "GetLoan")]
         public ActionResult<Loan> Get(int LoanKey)
@@ -43,7 +43,7 @@ namespace bankOfLeverx.Controllers
             return Ok(Loan);
         }
         ///<summary>POST method to add one Loan</summary>
-        ///<param name="Loan"></param>
+        ///<param name="Loan">loan object without key</param>
         ///<returns>added Loan including its id</returns> 
         [HttpPost(Name = "PostLoan")]
         public ActionResult<Loan> Post([FromBody] LoanDTO Loan)
@@ -64,8 +64,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PATCH method to change one Loan</summary>
-        ///<param name="LoanKey"></param>
-        ///<param name="Loan"></param>
+        ///<param name="LoanKey">unique identifier of loan</param>
+        ///<param name="Loan">loan object without key</param>
         ///<returns>changed Loan with all fields</returns> 
         [HttpPatch("{LoanKey}", Name = "PatchLoan")]
         public ActionResult<Loan> patch(int LoanKey, [FromBody] LoanPatchDTO Loan)
@@ -101,8 +101,8 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>PUT method to change one Loan</summary>
-        ///<param name="LoanKey"></param>
-        ///<param name="Loan"></param>
+        ///<param name="LoanKey">unique identifier of loan</param>
+        ///<param name="Loan">loan object without key</param>
         ///<returns>changed Loan with all fields</returns>
         [HttpPut("{LoanKey}", Name = "PutLoan")]
         public ActionResult<Loan> put(int LoanKey, [FromBody] LoanDTO Loan)
@@ -121,7 +121,7 @@ namespace bankOfLeverx.Controllers
         }
 
         ///<summary>DELETE method to delete one Loan</summary>
-        ///<param name="LoanKey"></param>
+        ///<param name="LoanKey">unique identifier of loan</param>
         ///<returns>only status code</returns>
         [HttpDelete("{LoanKey}", Name = "deleteLoan")]
         public IActionResult delete(int LoanKey)
