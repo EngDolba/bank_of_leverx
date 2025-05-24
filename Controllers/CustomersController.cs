@@ -53,7 +53,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Customer> Get(int customerKey)
         {
             var customer = Customers.FirstOrDefault(e => e.Key == customerKey);
-            if (customer == null)
+            if (customer is null)
             {
                 return NotFound($"Customer with Key {customerKey} not found.");
             }
@@ -116,7 +116,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Customer> put(int CustomerKey, [FromBody] CustomerDTO Customer)
         {
             Customer cust = Customers.FirstOrDefault(e => e.Key == CustomerKey);
-            if (cust == null)
+            if (cust is null)
             {
                 return NotFound($"Customer with Key {CustomerKey} not found.");
             }
@@ -153,23 +153,23 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Customer> patch(int customerKey, [FromBody] CustomerPatchDto customer)
         {
             Customer cust = Customers.FirstOrDefault(e => e.Key == customerKey);
-            if (cust == null)
+            if (cust is null)
             {
                 return NotFound($"Customer with Key {customerKey} not found.");
             }
-            if (customer.Name != null)
+            if (customer.Name is not null)
             {
                 cust.Name = customer.Name;
             }
-            if (customer.Surname != null)
+            if (customer.Surname is not null)
             {
                 cust.Surname = customer.Surname;
             }
-            if (customer.Category != null)
+            if (customer.Category is not null)
             {
                 cust.Category = customer.Category;
             }
-            if (customer.Branch != null)
+            if (customer.Branch is not null)
             {
                 cust.Branch = customer.Branch;
             }
@@ -198,7 +198,7 @@ namespace bankOfLeverx.Controllers
         public IActionResult delete(int customerKey)
         {
             Customer cust = Customers.FirstOrDefault(e => e.Key == customerKey);
-            if (cust == null)
+            if (cust is null)
             {
                 return NotFound($"Customer with key: {customerKey} not found");
             }

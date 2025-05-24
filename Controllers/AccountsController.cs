@@ -52,7 +52,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Account> Get(int AccountKey)
         {
             var Account = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (Account == null)
+            if (Account is null)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
             }
@@ -116,27 +116,27 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Account> patch(int AccountKey, [FromBody] AccountPatchDTO Account)
         {
             Account acc = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (acc == null)
+            if (acc is null)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
             }
-            if (Account.CustomerKey != null)
+            if (Account.CustomerKey is not null)
             {
                 acc.CustomerKey = (int)Account.CustomerKey;
             }
-            if (Account.Number != null)
+            if (Account.Number is not null)
             {
                 acc.Number = Account.Number;
             }
-            if (Account.PlanCode != null)
+            if (Account.PlanCode is not null)
             {
                 acc.PlanCode = Account.PlanCode;
             }
-            if (Account.Balance != null)
+            if (Account.Balance is not null)
             {
                 acc.Balance = (double)Account.Balance;
             }
-            if (Account.Branch != null)
+            if (Account.Branch is not null)
             {
                 acc.Branch = Account.Branch;
             }
@@ -169,7 +169,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Account> put(int AccountKey, [FromBody] AccountDTO Account)
         {
             Account acc = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (acc == null)
+            if (acc is null)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
             }
@@ -203,7 +203,7 @@ namespace bankOfLeverx.Controllers
         public IActionResult delete(int AccountKey)
         {
             Account acc = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (acc == null)
+            if (acc is null)
             {
                 return NotFound($"Account with key: {AccountKey} not found");
             }

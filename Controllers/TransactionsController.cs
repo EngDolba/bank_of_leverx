@@ -52,7 +52,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Transaction> Get(int TransactionKey)
         {
             var Transaction = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (Transaction == null)
+            if (Transaction is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
             }
@@ -118,27 +118,27 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Transaction> patch(int TransactionKey, [FromBody] TransactionPatchDTO Transaction)
         {
             Transaction tr = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (tr == null)
+            if (tr is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
             }
-            if (Transaction.AccountKey != null)
+            if (Transaction.AccountKey is not null)
             {
                 tr.AccountKey = (int)Transaction.AccountKey;
             }
-            if (Transaction.IsDebit != null)
+            if (Transaction.IsDebit is not null)
             {
                 tr.IsDebit = (bool)Transaction.IsDebit;
             }
-            if (Transaction.Amount != null)
+            if (Transaction.Amount is not null)
             {
                 tr.Amount = (double)Transaction.Amount;
             }
-            if (Transaction.Date != null)
+            if (Transaction.Date is not null)
             {
                 tr.Date = (DateTime)Transaction.Date;
             }
-            if (Transaction.Category != null)
+            if (Transaction.Category is not null)
             {
                 tr.Category = Transaction.Category;
             }
@@ -171,7 +171,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Transaction> put(int TransactionKey, [FromBody] TransactionDTO Transaction)
         {
             Transaction tr = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (tr == null)
+            if (tr is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
             }
@@ -205,7 +205,7 @@ namespace bankOfLeverx.Controllers
         public IActionResult delete(int TransactionKey)
         {
             Transaction tr = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (tr == null)
+            if (tr is null)
             {
                 return NotFound($"Transaction with key: {TransactionKey} not found");
             }

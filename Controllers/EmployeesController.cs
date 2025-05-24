@@ -58,7 +58,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Employee> Get(int employeeKey)
         {
             var employee = Employees.FirstOrDefault(e => e.Key == employeeKey);
-            if (employee == null)
+            if (employee is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
@@ -134,21 +134,21 @@ namespace bankOfLeverx.Controllers
         public ActionResult Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
         {
             var employee = Employees.FirstOrDefault(e => e.Key == employeeKey);
-            if (employee == null)
+            if (employee is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
 
-            if (employeePatch.Name != null)
+            if (employeePatch.Name is not null)
                 employee.Name = employeePatch.Name;
 
-            if (employeePatch.Surname != null)
+            if (employeePatch.Surname is not null)
                 employee.Surname = employeePatch.Surname;
 
-            if (employeePatch.Position != null)
+            if (employeePatch.Position is not null)
                 employee.Position = employeePatch.Position;
 
-            if (employeePatch.Branch != null)
+            if (employeePatch.Branch is not null)
                 employee.Branch = employeePatch.Branch;
 
             return Ok(employee);
@@ -180,7 +180,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Employee> Put(int employeeKey, [FromBody] EmployeeDTO employee)
         {
             var emp = Employees.FirstOrDefault(e => e.Key == employeeKey);
-            if (emp == null)
+            if (emp is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
@@ -213,7 +213,7 @@ namespace bankOfLeverx.Controllers
         public IActionResult delete(int employeeKey)
         {
             Employee cust = Employees.FirstOrDefault(e => e.Key == employeeKey);
-            if (cust == null)
+            if (cust is null)
             {
                 return NotFound($"Employee with key: {employeeKey} not found");
             }

@@ -52,7 +52,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Loan> Get(int LoanKey)
         {
             var Loan = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (Loan == null)
+            if (Loan is null)
             {
                 return NotFound($"Loan with Key {LoanKey} not found.");
             }
@@ -117,27 +117,27 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Loan> patch(int LoanKey, [FromBody] LoanPatchDTO Loan)
         {
             Loan ln = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (ln == null)
+            if (ln is null)
             {
                 return NotFound($"Loan with Key {LoanKey} not found.");
             }
-            if (Loan.AccountKey != null)
+            if (Loan.AccountKey is not null)
             {
                 ln.AccountKey = (int)Loan.AccountKey;
             }
-            if (Loan.Amount != null)
+            if (Loan.Amount is not null)
             {
                 ln.Amount = (int)Loan.Amount;
             }
-            if (Loan.startDate != null)
+            if (Loan.startDate is not null)
             {
                 ln.startDate = (DateOnly)Loan.startDate;
             }
-            if (Loan.endDate != null)
+            if (Loan.endDate is not null)
             {
                 ln.endDate = (DateOnly)Loan.endDate;
             }
-            if (Loan.Type != null)
+            if (Loan.Type is not null)
             {
                 ln.Type = Loan.Type;
             }
@@ -170,7 +170,7 @@ namespace bankOfLeverx.Controllers
         public ActionResult<Loan> put(int LoanKey, [FromBody] LoanDTO Loan)
         {
             Loan ln = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (ln == null)
+            if (ln is null)
             {
                 return NotFound($"Loan with Key {LoanKey} not found.");
             }
@@ -204,7 +204,7 @@ namespace bankOfLeverx.Controllers
         public IActionResult delete(int LoanKey)
         {
             Loan tr = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (tr == null)
+            if (tr is null)
             {
                 return NotFound($"Loan with key: {LoanKey} not found");
             }
