@@ -8,17 +8,12 @@ namespace bankOfLeverx.Controllers
     public class EmployeesController : ControllerBase
     {
         private static readonly string[] Names = ["Nikoloz", "Archil", "Nini"];
-
         private static readonly string[] Surnames = ["Dolbaia", "Gachechiladze", "Logua"];
-
         private static readonly string[] Positions = ["PL/SQL Developer", "CEO", "Product Owner"];
 
         private static int initialEmployeeSize = 3;
-
         private static int currentEmployeeKey = 1000;
-
         private static readonly List<Employee> Employees = new List<Employee>();
-
 
         private readonly ILogger<EmployeesController> _logger;
 
@@ -26,14 +21,13 @@ namespace bankOfLeverx.Controllers
         {
             for (int index = 0; index < initialEmployeeSize;)
             {
-
                 Employees.Add(new Employee
                 {
-                    Key = currentEmployeeKey+1,
+                    Key = currentEmployeeKey + 1,
                     Name = Names[initialEmployeeSize - 1],
                     Surname = Surnames[initialEmployeeSize - 1],
                     Position = Positions[initialEmployeeSize - 1],
-                    Branch = "HDOF" // "Head Office"
+                    Branch = "HDOF" // Head Office
                 });
                 currentEmployeeKey++;
                 initialEmployeeSize--;
@@ -41,9 +35,25 @@ namespace bankOfLeverx.Controllers
 
             _logger = logger;
         }
-        ///<summary>GET method to get one employee</summary>
-        ///<param name="employeeKey">unique key of employee</param>
-        ///<returns>employee with given Key</returns> 
+
+        /// <summary>
+        /// Get a specific employee by key.
+        /// </summary>
+        ///
+        /// <param name="employeeKey">
+        /// The unique key of the employee.
+        /// </param>
+        ///
+        /// <returns>
+        /// The employee object if found.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Employee found and returned.
+        /// </response>
+        /// <response code="404">
+        /// Employee not found.
+        /// </response>
         [HttpGet("{employeeKey}", Name = "GetEmployee")]
         public ActionResult<Employee> Get(int employeeKey)
         {
@@ -55,17 +65,34 @@ namespace bankOfLeverx.Controllers
             return Ok(employee);
         }
 
-        ///<summary>GET method to get all the employees</summary>
-        ///<returns>all the employees</returns> 
+        /// <summary>
+        /// Get all employees.
+        /// </summary>
+        ///
+        /// <returns>
+        /// A list of all employee objects.
+        /// </returns>
         [HttpGet(Name = "GetEmployees")]
         public IEnumerable<Employee> get()
         {
             return Employees;
         }
 
-        ///<summary>POST method to add one employee</summary>
-        ///<param name="emp">employee object without key</param>
-        ///<returns>added employee with its Key</returns> 
+        /// <summary>
+        /// Add a new employee.
+        /// </summary>
+        ///
+        /// <param name="emp">
+        /// Employee object without the key.
+        /// </param>
+        ///
+        /// <returns>
+        /// The added employee with assigned key.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Employee successfully created.
+        /// </response>
         [HttpPost(Name = "PostEmployee")]
         public IActionResult post([FromBody] EmployeeDTO emp)
         {
@@ -80,12 +107,30 @@ namespace bankOfLeverx.Controllers
             currentEmployeeKey++;
             return Ok(Employees.FirstOrDefault(e => e.Key == currentEmployeeKey));
         }
-        ///<summary>PATCH method to change one employee</summary>
-        ///<param name="employeeKey">unique key of employee</param>
-        ///<param name="employeePatch">employee object only with fields that should be changed</param>
-        ///<returns>changed employee with all fields</returns> 
-        [HttpPatch("{employeeKey}",Name = "PatchEmployee")]
 
+        /// <summary>
+        /// Partially update an existing employee.
+        /// </summary>
+        ///
+        /// <param name="employeeKey">
+        /// The unique key of the employee.
+        /// </param>
+        ///
+        /// <param name="employeePatch">
+        /// Employee patch object.
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated employee object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Employee successfully updated.
+        /// </response>
+        /// <response code="404">
+        /// Employee not found.
+        /// </response>
+        [HttpPatch("{employeeKey}", Name = "PatchEmployee")]
         public ActionResult Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
         {
             var employee = Employees.FirstOrDefault(e => e.Key == employeeKey);
@@ -109,11 +154,29 @@ namespace bankOfLeverx.Controllers
             return Ok(employee);
         }
 
-        ///<summary>PUT method to change one employee</summary>
-        ///<param name="employeeKey">unique key of employee</param>
-        ///<param name="employee">employee object without key</param>
-        ///<returns>changed EMployee with all fields</returns>
-        [HttpPut("{employeeKey}",Name = "PutEmployee")]
+        /// <summary>
+        /// Change an existing employee by providing full object.
+        /// </summary>
+        ///
+        /// <param name="employeeKey">
+        /// The unique key of the employee.
+        /// </param>
+        ///
+        /// <param name="employee">
+        /// The new employee data (excluding the key).
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated employee object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Employee successfully replaced.
+        /// </response>
+        /// <response code="404">
+        /// Employee not found.
+        /// </response>
+        [HttpPut("{employeeKey}", Name = "PutEmployee")]
         public ActionResult<Employee> Put(int employeeKey, [FromBody] EmployeeDTO employee)
         {
             var emp = Employees.FirstOrDefault(e => e.Key == employeeKey);
@@ -128,10 +191,25 @@ namespace bankOfLeverx.Controllers
             return Ok(emp);
         }
 
-        ///<summary>DELETE method to delete one employee</summary>
-        ///<param name="employeeKey">unique key of employee</param>
-        ///<returns>only status code of action </returns>
-        [HttpDelete("{employeeKey} ", Name = "deleteEmployee")]
+        /// <summary>
+        /// Delete an employee by key.
+        /// </summary>
+        ///
+        /// <param name="employeeKey">
+        /// The unique key of the employee to delete.
+        /// </param>
+        ///
+        /// <returns>
+        /// Status message about the deletion.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Employee successfully deleted.
+        /// </response>
+        /// <response code="404">
+        /// Employee not found.
+        /// </response>
+        [HttpDelete("{employeeKey}", Name = "deleteEmployee")]
         public IActionResult delete(int employeeKey)
         {
             Employee cust = Employees.FirstOrDefault(e => e.Key == employeeKey);
@@ -142,9 +220,5 @@ namespace bankOfLeverx.Controllers
             Employees.Remove(cust);
             return Ok($"Employee with key: {employeeKey} deleted");
         }
-
-
-
     }
 }
-

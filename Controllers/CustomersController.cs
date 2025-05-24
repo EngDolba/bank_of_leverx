@@ -14,23 +14,41 @@ namespace bankOfLeverx.Controllers
 
         private static List<Customer> Customers = new List<Customer>();
 
-
         public CustomersController(ILogger<CustomersController> logger)
         {
             _logger = logger;
-
         }
-        ///<summary>GET method to get all the customers</summary>
-        ///<returns>all the customers</returns> 
+
+        /// <summary>
+        /// Get all customers.
+        /// </summary>
+        /// <returns>
+        /// A list of all customer objects.
+        /// </returns>
         [HttpGet(Name = "GetCustomers")]
         public IEnumerable<Customer> get()
         {
             return Customers;
         }
 
-        ///<summary>GET method to get one customer with its id</summary>
-        ///<param name="customerKey">unique key of customer</param>
-        ///<returns>the customer with the given id</returns> 
+        /// <summary>
+        /// Get a specific customer by key.
+        /// </summary>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer.
+        /// </param>
+        ///
+        /// <returns>
+        /// The customer object if found.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer found and returned.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpGet("{customerKey}", Name = "GetCustomer")]
         public ActionResult<Customer> Get(int customerKey)
         {
@@ -41,13 +59,25 @@ namespace bankOfLeverx.Controllers
             }
             return Ok(customer);
         }
-        ///<summary>POST method to add one customer</summary>
-        ///<param name="customer">customer object without key</param>
-        ///<returns>added customer including its id</returns> 
+
+        /// <summary>
+        /// Add a new customer.
+        /// </summary>
+        ///
+        /// <param name="customer">
+        /// Customer object without the key.
+        /// </param>
+        ///
+        /// <returns>
+        /// The added customer with assigned key.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully created.
+        /// </response>
         [HttpPost(Name = "PostCustomer")]
         public ActionResult<Customer> Post([FromBody] CustomerDTO customer)
         {
-
             Customer cust = new Customer
             {
                 Key = currentKey++,
@@ -60,10 +90,28 @@ namespace bankOfLeverx.Controllers
             return Ok(cust);
         }
 
-        ///<summary>PUT method to change one Customer</summary>
-        ///<param name="CustomerKey">unique key of customer</param>
-        ///<param name="Customer">customer object without key</param>
-        ///<returns>changed Customer with all fields</returns>
+        /// <summary>
+        /// Change an existing customer by providing full object.
+        /// </summary>
+        ///
+        /// <param name="CustomerKey">
+        /// The unique key of the customer.
+        /// </param>
+        ///
+        /// <param name="Customer">
+        /// The new customer data (excluding the key).
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated customer object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully replaced.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpPut("{CustomerKey}", Name = "PutCustomer")]
         public ActionResult<Customer> put(int CustomerKey, [FromBody] CustomerDTO Customer)
         {
@@ -79,10 +127,28 @@ namespace bankOfLeverx.Controllers
             return Ok(cust);
         }
 
-        ///<summary>PATCH method to change one customer</summary>
-        ///<param name="customerKey">unique key of customer</param>
-        ///<param name="customer">customer object without key</param>
-        ///<returns>changed customer with all fields</returns> 
+        /// <summary>
+        /// Partially update an existing customer.
+        /// </summary>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer.
+        /// </param>
+        ///
+        /// <param name="customer">
+        /// Customer patch object.
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated customer object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully updated.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpPatch("{customerKey}", Name = "PatchCustomer")]
         public ActionResult<Customer> patch(int customerKey, [FromBody] CustomerPatchDto customer)
         {
@@ -108,23 +174,36 @@ namespace bankOfLeverx.Controllers
                 cust.Branch = customer.Branch;
             }
             return Ok(cust);
-
         }
 
-        ///<summary>DELETE method to delete one customer</summary>
-        ///<param name="customerKey">unique key of customer</param>
-        ///<returns>only status code</returns>
+        /// <summary>
+        /// Delete a customer by key.
+        /// </summary>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer to delete.
+        /// </param>
+        ///
+        /// <returns>
+        /// Status message about the deletion.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully deleted.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpDelete("{customerKey}", Name = "deleteCustomer")]
         public IActionResult delete(int customerKey)
         {
             Customer cust = Customers.FirstOrDefault(e => e.Key == customerKey);
-            if (cust == null) {
-                return NotFound($"customer with key: {customerKey} not found");
+            if (cust == null)
+            {
+                return NotFound($"Customer with key: {customerKey} not found");
             }
             Customers.Remove(cust);
-            return Ok($"customer with key: {customerKey} deleted");
+            return Ok($"Customer with key: {customerKey} deleted");
         }
-        
     }
-
 }

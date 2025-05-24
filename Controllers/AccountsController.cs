@@ -9,28 +9,45 @@ namespace bankOfLeverx.Controllers
     public class AccountsController : Controller
     {
         private readonly ILogger<AccountsController> _logger;
-
         private static int currentKey = 1000;
-
         private static List<Account> Accounts = new List<Account>();
-
 
         public AccountsController(ILogger<AccountsController> logger)
         {
             _logger = logger;
-
         }
-        ///<summary>GET method to get all the Accounts</summary>
-        ///<returns>all the Accounts</returns> 
+
+        /// <summary>
+        /// Get all accounts.
+        /// </summary>
+        ///
+        /// <returns>
+        /// A list of all account objects.
+        /// </returns>
         [HttpGet(Name = "GetAccounts")]
         public IEnumerable<Account> get()
         {
             return Accounts;
         }
 
-        ///<summary>GET method to get one Account with its id</summary>
-        ///<param name="AccountKey">unique key of account</param>
-        ///<returns>the Account with the given id</returns> 
+        /// <summary>
+        /// Get a specific account by key.
+        /// </summary>
+        ///
+        /// <param name="AccountKey">
+        /// The unique key of the account.
+        /// </param>
+        ///
+        /// <returns>
+        /// The account object if found.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Account found and returned.
+        /// </response>
+        /// <response code="404">
+        /// Account not found.
+        /// </response>
         [HttpGet("{AccountKey}", Name = "GetAccount")]
         public ActionResult<Account> Get(int AccountKey)
         {
@@ -41,13 +58,25 @@ namespace bankOfLeverx.Controllers
             }
             return Ok(Account);
         }
-        ///<summary>POST method to add one Account</summary>
-        ///<param name="Account">account object without key</param>
-        ///<returns>added Account including its id</returns> 
+
+        /// <summary>
+        /// Add a new account.
+        /// </summary>
+        ///
+        /// <param name="Account">
+        /// Account object without the key.
+        /// </param>
+        ///
+        /// <returns>
+        /// The added account with assigned key.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Account successfully created.
+        /// </response>
         [HttpPost(Name = "PostAccount")]
         public ActionResult<Account> Post([FromBody] AccountDTO Account)
         {
-
             Account acc = new Account
             {
                 Key = currentKey++,
@@ -61,10 +90,28 @@ namespace bankOfLeverx.Controllers
             return Ok(acc);
         }
 
-        ///<summary>PATCH method to change one Account</summary>
-        ///<param name="AccountKey">unique key of account</param>
-        ///<param name="Account">account object without key</param>
-        ///<returns>changed Account with all fields</returns> 
+        /// <summary>
+        /// Partially update an existing account.
+        /// </summary>
+        ///
+        /// <param name="AccountKey">
+        /// The unique key of the account.
+        /// </param>
+        ///
+        /// <param name="Account">
+        /// Account patch object.
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated account object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Account successfully updated.
+        /// </response>
+        /// <response code="404">
+        /// Account not found.
+        /// </response>
         [HttpPatch("{AccountKey}", Name = "PatchAccount")]
         public ActionResult<Account> patch(int AccountKey, [FromBody] AccountPatchDTO Account)
         {
@@ -75,7 +122,7 @@ namespace bankOfLeverx.Controllers
             }
             if (Account.CustomerKey != null)
             {
-                acc.CustomerKey = (int) Account.CustomerKey;
+                acc.CustomerKey = (int)Account.CustomerKey;
             }
             if (Account.Number != null)
             {
@@ -87,20 +134,37 @@ namespace bankOfLeverx.Controllers
             }
             if (Account.Balance != null)
             {
-                acc.Balance = (double) Account.Balance;
+                acc.Balance = (double)Account.Balance;
             }
             if (Account.Branch != null)
             {
                 acc.Branch = Account.Branch;
             }
             return Ok(acc);
-
         }
 
-        ///<summary>PUT method to change one Account</summary>
-        ///<param name="AccountKey">unique key of account</param>
-        ///<param name="Account">account object without key</param>
-        ///<returns>changed Account with all fields</returns>
+        /// <summary>
+        /// Change an existing account by providing full object.
+        /// </summary>
+        ///
+        /// <param name="AccountKey">
+        /// The unique key of the account.
+        /// </param>
+        ///
+        /// <param name="Account">
+        /// The new account data (excluding the key).
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated account object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Account successfully replaced.
+        /// </response>
+        /// <response code="404">
+        /// Account not found.
+        /// </response>
         [HttpPut("{AccountKey}", Name = "PutAccount")]
         public ActionResult<Account> put(int AccountKey, [FromBody] AccountDTO Account)
         {
@@ -116,20 +180,35 @@ namespace bankOfLeverx.Controllers
             acc.Branch = Account.Branch;
             return Ok(acc);
         }
-        ///<summary>DELETE method to delete one Account</summary>
-        ///<param name="AccountKey">unique key of account</param>
-        ///<returns>only status code</returns>
+
+        /// <summary>
+        /// Delete an account by key.
+        /// </summary>
+        ///
+        /// <param name="AccountKey">
+        /// The unique key of the account to delete.
+        /// </param>
+        ///
+        /// <returns>
+        /// Status message about the deletion.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Account successfully deleted.
+        /// </response>
+        /// <response code="404">
+        /// Account not found.
+        /// </response>
         [HttpDelete("{AccountKey}", Name = "deleteAccount")]
         public IActionResult delete(int AccountKey)
         {
             Account acc = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (acc == null) {
+            if (acc == null)
+            {
                 return NotFound($"Account with key: {AccountKey} not found");
             }
             Accounts.Remove(acc);
             return Ok($"Account with key: {AccountKey} deleted");
         }
-        
     }
-
 }

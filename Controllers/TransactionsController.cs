@@ -9,29 +9,45 @@ namespace bankOfLeverx.Controllers
     public class TransactionsController : Controller
     {
         private readonly ILogger<TransactionsController> _logger;
-
         private static int currentKey = 1000;
-
         private static List<Transaction> Transactions = new List<Transaction>();
-
 
         public TransactionsController(ILogger<TransactionsController> logger)
         {
             _logger = logger;
-
         }
-        ///<summary>GET method to get all the Transactions</summary>
+
+        /// <summary>
+        /// Get all transactions.
+        /// </summary>
         ///
-        ///<returns>all the Transactions</returns> 
+        /// <returns>
+        /// A list of all transaction objects.
+        /// </returns>
         [HttpGet(Name = "GetTransactions")]
         public IEnumerable<Transaction> get()
         {
             return Transactions;
         }
 
-        ///<summary>GET method to get one Transaction with its id</summary>
-        ///<param name="TransactionKey">unique key of transaction</param>
-        ///<returns>the Transaction with the given id</returns> 
+        /// <summary>
+        /// Get a specific transaction by key.
+        /// </summary>
+        ///
+        /// <param name="TransactionKey">
+        /// The unique key of the transaction.
+        /// </param>
+        ///
+        /// <returns>
+        /// The transaction object if found.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Transaction found and returned.
+        /// </response>
+        /// <response code="404">
+        /// Transaction not found.
+        /// </response>
         [HttpGet("{TransactionKey}", Name = "GetTransaction")]
         public ActionResult<Transaction> Get(int TransactionKey)
         {
@@ -42,13 +58,25 @@ namespace bankOfLeverx.Controllers
             }
             return Ok(Transaction);
         }
-        ///<summary>POST method to add one Transaction</summary>
-        ///<param name="Transaction">transaction object without key</param>
-        ///<returns>added Transaction including its id</returns> 
+
+        /// <summary>
+        /// Add a new transaction.
+        /// </summary>
+        ///
+        /// <param name="Transaction">
+        /// Transaction object without the key.
+        /// </param>
+        ///
+        /// <returns>
+        /// The added transaction with assigned key.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Transaction successfully created.
+        /// </response>
         [HttpPost(Name = "PostTransaction")]
         public ActionResult<Transaction> Post([FromBody] TransactionDTO Transaction)
         {
-
             Transaction acc = new Transaction
             {
                 Key = currentKey++,
@@ -64,10 +92,28 @@ namespace bankOfLeverx.Controllers
             return Ok(acc);
         }
 
-        ///<summary>PATCH method to change one Transaction</summary>
-        ///<param name="TransactionKey">unique key of transaction</param>
-        ///<param name="Transaction">transaction object without key</param>
-        ///<returns>changed Transaction with all fields</returns> 
+        /// <summary>
+        /// Partially update an existing transaction.
+        /// </summary>
+        ///
+        /// <param name="TransactionKey">
+        /// The unique key of the transaction.
+        /// </param>
+        ///
+        /// <param name="Transaction">
+        /// Transaction patch object.
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated transaction object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Transaction successfully updated.
+        /// </response>
+        /// <response code="404">
+        /// Transaction not found.
+        /// </response>
         [HttpPatch("{TransactionKey}", Name = "PatchTransaction")]
         public ActionResult<Transaction> patch(int TransactionKey, [FromBody] TransactionPatchDTO Transaction)
         {
@@ -86,25 +132,41 @@ namespace bankOfLeverx.Controllers
             }
             if (Transaction.Amount != null)
             {
-                tr.Amount = (double) Transaction.Amount;
+                tr.Amount = (double)Transaction.Amount;
             }
             if (Transaction.Date != null)
             {
-                tr.Date = (DateTime) Transaction.Date;
+                tr.Date = (DateTime)Transaction.Date;
             }
-
             if (Transaction.Category != null)
             {
                 tr.Category = Transaction.Category;
             }
             return Ok(tr);
-
         }
 
-        ///<summary>PUT method to change one Transaction</summary>
-        ///<param name="TransactionKey">unique key of transaction</param>
-        ///<param name="Transaction">transaction object without key</param>
-        ///<returns>changed Transaction with all fields</returns>
+        /// <summary>
+        /// Change an existing transaction by providing full object.
+        /// </summary>
+        ///
+        /// <param name="TransactionKey">
+        /// The unique key of the transaction.
+        /// </param>
+        ///
+        /// <param name="Transaction">
+        /// The new transaction data (excluding the key).
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated transaction object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Transaction successfully replaced.
+        /// </response>
+        /// <response code="404">
+        /// Transaction not found.
+        /// </response>
         [HttpPut("{TransactionKey}", Name = "PutTransaction")]
         public ActionResult<Transaction> put(int TransactionKey, [FromBody] TransactionDTO Transaction)
         {
@@ -121,20 +183,34 @@ namespace bankOfLeverx.Controllers
             return Ok(tr);
         }
 
-        ///<summary>DELETE method to delete one Transaction</summary>
-        ///<param name="TransactionKey">unique key of transaction</param>
-        ///<returns>only status code</returns>
+        /// <summary>
+        /// Delete a transaction by key.
+        /// </summary>
+        ///
+        /// <param name="TransactionKey">
+        /// The unique key of the transaction to delete.
+        /// </param>
+        ///
+        /// <returns>
+        /// Status message about the deletion.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Transaction successfully deleted.
+        /// </response>
+        /// <response code="404">
+        /// Transaction not found.
+        /// </response>
         [HttpDelete("{TransactionKey}", Name = "deleteTransaction")]
         public IActionResult delete(int TransactionKey)
         {
             Transaction tr = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (tr == null) {
+            if (tr == null)
+            {
                 return NotFound($"Transaction with key: {TransactionKey} not found");
             }
             Transactions.Remove(tr);
             return Ok($"Transaction with key: {TransactionKey} deleted");
         }
-        
     }
-
 }
