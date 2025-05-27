@@ -81,8 +81,9 @@ namespace bankOfLeverx.Controllers
             {
                 Key = currentKey++,
                 Amount = Loan.Amount,
-                startDate = Loan.startDate,
-                endDate = Loan.endDate,
+                StartDate = Loan.StartDate,
+                EndDate = Loan.EndDate,
+                Rate = Loan.Rate,
                 Type = Loan.Type,
                 AccountKey = Loan.AccountKey
             };
@@ -129,13 +130,13 @@ namespace bankOfLeverx.Controllers
             {
                 ln.Amount = (int)Loan.Amount;
             }
-            if (Loan.startDate is not null)
+            if (Loan.StartDate is not null)
             {
-                ln.startDate = (DateOnly)Loan.startDate;
+                ln.StartDate = (DateOnly)Loan.StartDate;
             }
-            if (Loan.endDate is not null)
+            if (Loan.EndDate is not null)
             {
-                ln.endDate = (DateOnly)Loan.endDate;
+                ln.EndDate = (DateOnly)Loan.EndDate;
             }
             if (Loan.Type is not null)
             {
@@ -175,8 +176,8 @@ namespace bankOfLeverx.Controllers
                 return NotFound($"Loan with Key {LoanKey} not found.");
             }
             ln.Amount = Loan.Amount;
-            ln.startDate = Loan.startDate;
-            ln.endDate = Loan.endDate;
+            ln.StartDate = Loan.StartDate;
+            ln.EndDate = Loan.EndDate;
             ln.Type = Loan.Type;
             ln.AccountKey = Loan.AccountKey;
             return Ok(ln);
