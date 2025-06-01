@@ -1,0 +1,449 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\TransactionsController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\Controllers\\TransactionsController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.core\\dto\\transactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|solutionrelative:bankofleverx.core\\dto\\transactiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.infrastructure\\data\\repositories\\iloanrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|solutionrelative:bankofleverx.infrastructure\\data\\repositories\\iloanrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.infrastructure\\data\\repositories\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|solutionrelative:bankofleverx.infrastructure\\data\\repositories\\iemployeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.infrastructure\\data\\repositories\\loanrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|solutionrelative:bankofleverx.infrastructure\\data\\repositories\\loanrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.infrastructure\\data\\repositories\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|solutionrelative:bankofleverx.infrastructure\\data\\repositories\\employeerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.infrastructure\\bankofleverx.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|solutionrelative:bankofleverx.infrastructure\\bankofleverx.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.core\\dto\\loanpatchdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|solutionrelative:bankofleverx.core\\dto\\loanpatchdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.core\\dto\\loandto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|solutionrelative:bankofleverx.core\\dto\\loandto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C1D26CB3-4B54-4CE9-9013-A1F1B306E429}|BankOfLeverx.API\\BankOfLeverx.API.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.api\\bankofleverx.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{C1D26CB3-4B54-4CE9-9013-A1F1B306E429}|BankOfLeverx.API\\BankOfLeverx.API.csproj|solutionrelative:bankofleverx.api\\bankofleverx.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9E6C39F-AD5B-4D56-B7B3-C6BEDC068C21}|BankOfLeverx.Application\\BankOfLeverx.Application.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.application\\bankofleverx.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{C9E6C39F-AD5B-4D56-B7B3-C6BEDC068C21}|BankOfLeverx.Application\\BankOfLeverx.Application.csproj|solutionrelative:bankofleverx.application\\bankofleverx.application.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.infrastructure\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{100CBE11-F8B3-4B31-844D-35772652623E}|BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj|solutionrelative:bankofleverx.infrastructure\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.core\\dto\\employeepatchdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|solutionrelative:bankofleverx.core\\dto\\employeepatchdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|c:\\users\\ndolb\\source\\repos\\bank_of_leverx\\bankofleverx.core\\dto\\employeedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F755D467-F7B7-CDC7-3AD8-C05F99E0FC65}|BankOfLeverx.Core\\BankOfLeverx.Core.csproj|solutionrelative:bankofleverx.core\\dto\\employeedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\DTO\\LoanPatchDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.Domain\\DTO\\LoanPatchDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\DTO\\LoanDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.Domain\\DTO\\LoanDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository - Copy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository - Copy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\Models\\Transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.Domain\\Models\\Transaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\Models\\Loan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.Domain\\Models\\Loan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\LoansController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\Controllers\\LoansController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\Program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\EmployeesController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\Controllers\\EmployeesController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.Core\\Class1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\CustomersController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\Controllers\\CustomersController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\AccountsController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\Controllers\\AccountsController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Properties\\launchSettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:BankOfLeverx.API\\Properties\\launchSettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "ILoanRepository - Copy.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository - Copy.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository - Copy.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository - Copy.cs",
+              "RelativeToolTip": "BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository - Copy.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T16:27:04.209Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TransactionDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\TransactionDTO.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Core\\DTO\\TransactionDTO.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\TransactionDTO.cs",
+              "RelativeToolTip": "BankOfLeverx.Core\\DTO\\TransactionDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T16:19:25.434Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Transaction.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\Models\\Transaction.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Domain\\Models\\Transaction.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\Models\\Transaction.cs",
+              "RelativeToolTip": "BankOfLeverx.Domain\\Models\\Transaction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T16:25:26.089Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TransactionsController.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\TransactionsController.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\Controllers\\TransactionsController.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\TransactionsController.cs",
+              "RelativeToolTip": "BankOfLeverx.API\\Controllers\\TransactionsController.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T13:19:51.195Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LoanPatchDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\LoanPatchDTO.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Core\\DTO\\LoanPatchDTO.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\LoanPatchDTO.cs",
+              "RelativeToolTip": "BankOfLeverx.Core\\DTO\\LoanPatchDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T14:48:24.494Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "IEmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\IEmployeeRepository.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Infrastructure\\Data\\Repositories\\IEmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\IEmployeeRepository.cs",
+              "RelativeToolTip": "BankOfLeverx.Infrastructure\\Data\\Repositories\\IEmployeeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T13:05:03.219Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "LoanRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\LoanRepository.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Infrastructure\\Data\\Repositories\\LoanRepository.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\LoanRepository.cs",
+              "RelativeToolTip": "BankOfLeverx.Infrastructure\\Data\\Repositories\\LoanRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T14:52:14.209Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "EmployeeRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\EmployeeRepository.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Infrastructure\\Data\\Repositories\\EmployeeRepository.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\EmployeeRepository.cs",
+              "RelativeToolTip": "BankOfLeverx.Infrastructure\\Data\\Repositories\\EmployeeRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGoAAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T12:56:57.398Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ILoanRepository.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository.cs",
+              "RelativeToolTip": "BankOfLeverx.Infrastructure\\Data\\Repositories\\ILoanRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T14:47:33.227Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "Loan.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\Models\\Loan.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Domain\\Models\\Loan.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\Models\\Loan.cs",
+              "RelativeToolTip": "BankOfLeverx.Domain\\Models\\Loan.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T14:50:09.644Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "LoansController.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\LoansController.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\Controllers\\LoansController.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\LoansController.cs",
+              "RelativeToolTip": "BankOfLeverx.API\\Controllers\\LoansController.cs",
+              "ViewState": "AgIAAF8AAAAAAAAAAAAuwG0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:05:19.455Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "BankOfLeverx.Infrastructure.csproj",
+              "DocumentMoniker": "C:\\Users\\ndolb\\Source\\Repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj",
+              "ToolTip": "C:\\Users\\ndolb\\Source\\Repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj",
+              "RelativeToolTip": "BankOfLeverx.Infrastructure\\BankOfLeverx.Infrastructure.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-01T12:43:54.538Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Program.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\Program.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Program.cs",
+              "RelativeToolTip": "BankOfLeverx.API\\Program.cs",
+              "ViewState": "AgIAACEAAAAAAAAAAIBJwAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:09:02.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "EmployeesController.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\EmployeesController.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\Controllers\\EmployeesController.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\EmployeesController.cs",
+              "RelativeToolTip": "BankOfLeverx.API\\Controllers\\EmployeesController.cs",
+              "ViewState": "AgIAAKEAAAAAAAAAAAAqwLQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T20:02:27.532Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "LoanDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\LoanDTO.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Core\\DTO\\LoanDTO.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\LoanDTO.cs",
+              "RelativeToolTip": "BankOfLeverx.Core\\DTO\\LoanDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T14:48:47.717Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "BankOfLeverx.API.csproj",
+              "DocumentMoniker": "C:\\Users\\ndolb\\Source\\Repos\\bank_of_leverx\\BankOfLeverx.API\\BankOfLeverx.API.csproj",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\BankOfLeverx.API.csproj",
+              "ToolTip": "C:\\Users\\ndolb\\Source\\Repos\\bank_of_leverx\\BankOfLeverx.API\\BankOfLeverx.API.csproj*",
+              "RelativeToolTip": "BankOfLeverx.API\\BankOfLeverx.API.csproj*",
+              "ViewState": "AgIAAAYAAAAAAAAAAIBJwBQAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-05-26T17:18:00.361Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "BankOfLeverx.Application.csproj",
+              "DocumentMoniker": "C:\\Users\\ndolb\\Source\\Repos\\bank_of_leverx\\BankOfLeverx.Application\\BankOfLeverx.Application.csproj",
+              "RelativeDocumentMoniker": "BankOfLeverx.Application\\BankOfLeverx.Application.csproj",
+              "ToolTip": "C:\\Users\\ndolb\\Source\\Repos\\bank_of_leverx\\BankOfLeverx.Application\\BankOfLeverx.Application.csproj",
+              "RelativeToolTip": "BankOfLeverx.Application\\BankOfLeverx.Application.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-01T13:00:19.695Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Infrastructure\\Data\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Infrastructure\\Data\\AppDbContext.cs",
+              "RelativeToolTip": "BankOfLeverx.Infrastructure\\Data\\AppDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T12:56:49.098Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Class1.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\Class1.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Core\\Class1.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\Class1.cs",
+              "RelativeToolTip": "BankOfLeverx.Core\\Class1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T13:52:20.426Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\appsettings.json",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\appsettings.json",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\appsettings.json",
+              "RelativeToolTip": "BankOfLeverx.API\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-26T17:10:20.617Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "CustomersController.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\CustomersController.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\Controllers\\CustomersController.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\CustomersController.cs",
+              "RelativeToolTip": "BankOfLeverx.API\\Controllers\\CustomersController.cs",
+              "ViewState": "AgIAALcAAAAAAAAAAAAiwM0AAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T13:07:03.066Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "AccountsController.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\AccountsController.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\Controllers\\AccountsController.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Controllers\\AccountsController.cs",
+              "RelativeToolTip": "BankOfLeverx.API\\Controllers\\AccountsController.cs",
+              "ViewState": "AgIAAL4AAAAAAAAAAAAuwNEAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T13:20:02.217Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "EmployeePatchDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\EmployeePatchDTO.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Core\\DTO\\EmployeePatchDTO.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\EmployeePatchDTO.cs",
+              "RelativeToolTip": "BankOfLeverx.Core\\DTO\\EmployeePatchDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T12:52:22.003Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "EmployeeDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\EmployeeDTO.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Core\\DTO\\EmployeeDTO.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Core\\DTO\\EmployeeDTO.cs",
+              "RelativeToolTip": "BankOfLeverx.Core\\DTO\\EmployeeDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-01T12:52:13.273Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "BankOfLeverx.API\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.API\\Properties\\launchSettings.json",
+              "RelativeToolTip": "BankOfLeverx.API\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-05-26T17:20:30.959Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "LoanPatchDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\DTO\\LoanPatchDTO.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Domain\\DTO\\LoanPatchDTO.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\DTO\\LoanPatchDTO.cs",
+              "RelativeToolTip": "BankOfLeverx.Domain\\DTO\\LoanPatchDTO.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:06:14.832Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "LoanDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\DTO\\LoanDTO.cs",
+              "RelativeDocumentMoniker": "BankOfLeverx.Domain\\DTO\\LoanDTO.cs",
+              "ToolTip": "C:\\Users\\ndolb\\source\\repos\\bank_of_leverx\\BankOfLeverx.Domain\\DTO\\LoanDTO.cs",
+              "RelativeToolTip": "BankOfLeverx.Domain\\DTO\\LoanDTO.cs",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T17:06:05.084Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

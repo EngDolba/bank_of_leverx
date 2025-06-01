@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\BankOfLeverx.API",
+    "\\BankOfLeverx.API\\Controllers",
+    "\\BankOfLeverx.Application",
+    "\\BankOfLeverx.Domain",
+    "\\BankOfLeverx.Infrastructure"
+  ],
+  "SelectedNode": "\\BankOfLeverx.API\\Controllers\\LoansController.cs",
+  "PreviewInSolutionExplorer": false
+}
