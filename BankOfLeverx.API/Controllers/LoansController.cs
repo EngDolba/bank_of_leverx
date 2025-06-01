@@ -1,40 +1,28 @@
-﻿using bankOfLeverx.Models;
-using Microsoft.AspNetCore.Http;
+﻿using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
+using BankOfLeverx.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bankOfLeverx.Controllers
+namespace BankOfLeverx.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class LoansController : Controller
+    public class LoansController : ControllerBase
     {
+        private readonly ILoanRepository _loanRepository;
         private readonly ILogger<LoansController> _logger;
-        private static int currentKey = 1000;
-        private static List<Loan> Loans = new List<Loan>();
 
-        public LoansController(ILogger<LoansController> logger)
+        public LoansController(ILoanRepository loanRepository, ILogger<LoansController> logger)
         {
+            _loanRepository = loanRepository;
             _logger = logger;
-        }
-
-        /// <summary>
-        /// Get all loans.
-        /// </summary>
-        ///
-        /// <returns>
-        /// A list of all loan objects.
-        /// </returns>
-        [HttpGet(Name = "GetLoans")]
-        public IEnumerable<Loan> get()
-        {
-            return Loans;
         }
 
         /// <summary>
         /// Get a specific loan by key.
         /// </summary>
         ///
-        /// <param name="LoanKey">
+        /// <param name="loanKey">
         /// The unique key of the loan.
         /// </param>
         ///
@@ -48,22 +36,35 @@ namespace bankOfLeverx.Controllers
         /// <response code="404">
         /// Loan not found.
         /// </response>
-        [HttpGet("{LoanKey}", Name = "GetLoan")]
-        public ActionResult<Loan> Get(int LoanKey)
+        [HttpGet("{loanKey}", Name = "GetLoan")]
+        public async Task<ActionResult<Loan>> Get(int loanKey)
         {
-            var Loan = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (Loan is null)
+            var loan = await _loanRepository.GetByIdAsync(loanKey);
+            if (loan is null)
             {
-                return NotFound($"Loan with Key {LoanKey} not found.");
+                return NotFound($"Loan with Key {loanKey} not found.");
             }
-            return Ok(Loan);
+            return Ok(loan);
+        }
+
+        /// <summary>
+        /// Get all loans.
+        /// </summary>
+        ///
+        /// <returns>
+        /// A list of all loan objects.
+        /// </returns>
+        [HttpGet(Name = "GetLoans")]
+        public async Task<IEnumerable<Loan>> Get()
+        {
+            return await _loanRepository.GetAllAsync();
         }
 
         /// <summary>
         /// Add a new loan.
         /// </summary>
         ///
-        /// <param name="Loan">
+        /// <param name="loanDto">
         /// Loan object without the key.
         /// </param>
         ///
@@ -75,32 +76,21 @@ namespace bankOfLeverx.Controllers
         /// Loan successfully created.
         /// </response>
         [HttpPost(Name = "PostLoan")]
-        public ActionResult<Loan> Post([FromBody] LoanDTO Loan)
+        public async Task<IActionResult> Post([FromBody] LoanDTO loanDto)
         {
-            Loan ln = new Loan
-            {
-                Key = currentKey++,
-                Amount = Loan.Amount,
-                StartDate = Loan.StartDate,
-                EndDate = Loan.EndDate,
-                Rate = Loan.Rate,
-                Type = Loan.Type,
-                AccountKey = Loan.AccountKey
-            };
-
-            Loans.Add(ln);
-            return Ok(ln);
+            var newLoan = await _loanRepository.CreateAsync(loanDto);
+            return Ok(newLoan);
         }
 
         /// <summary>
         /// Partially update an existing loan.
         /// </summary>
         ///
-        /// <param name="LoanKey">
+        /// <param name="loanKey">
         /// The unique key of the loan.
         /// </param>
         ///
-        /// <param name="Loan">
+        /// <param name="loanPatch">
         /// Loan patch object.
         /// </param>
         ///
@@ -114,46 +104,26 @@ namespace bankOfLeverx.Controllers
         /// <response code="404">
         /// Loan not found.
         /// </response>
-        [HttpPatch("{LoanKey}", Name = "PatchLoan")]
-        public ActionResult<Loan> patch(int LoanKey, [FromBody] LoanPatchDTO Loan)
+        [HttpPatch("{loanKey}", Name = "PatchLoan")]
+        public async Task<ActionResult> Patch(int loanKey, [FromBody] LoanPatchDTO loanPatch)
         {
-            Loan ln = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (ln is null)
+            var updated = await _loanRepository.PatchAsync(loanKey, loanPatch);
+            if (updated is null)
             {
-                return NotFound($"Loan with Key {LoanKey} not found.");
+                return NotFound($"Loan with Key {loanKey} not found.");
             }
-            if (Loan.AccountKey is not null)
-            {
-                ln.AccountKey = (int)Loan.AccountKey;
-            }
-            if (Loan.Amount is not null)
-            {
-                ln.Amount = (int)Loan.Amount;
-            }
-            if (Loan.StartDate is not null)
-            {
-                ln.StartDate = (DateOnly)Loan.StartDate;
-            }
-            if (Loan.EndDate is not null)
-            {
-                ln.EndDate = (DateOnly)Loan.EndDate;
-            }
-            if (Loan.Type is not null)
-            {
-                ln.Type = Loan.Type;
-            }
-            return Ok(ln);
+            return Ok(updated);
         }
 
         /// <summary>
         /// Change an existing loan by providing full object.
         /// </summary>
         ///
-        /// <param name="LoanKey">
+        /// <param name="loanKey">
         /// The unique key of the loan.
         /// </param>
         ///
-        /// <param name="Loan">
+        /// <param name="loanDto">
         /// The new loan data (excluding the key).
         /// </param>
         ///
@@ -167,27 +137,22 @@ namespace bankOfLeverx.Controllers
         /// <response code="404">
         /// Loan not found.
         /// </response>
-        [HttpPut("{LoanKey}", Name = "PutLoan")]
-        public ActionResult<Loan> put(int LoanKey, [FromBody] LoanDTO Loan)
+        [HttpPut("{loanKey}", Name = "PutLoan")]
+        public async Task<ActionResult<Loan>> Put(int loanKey, [FromBody] LoanDTO loanDto)
         {
-            Loan ln = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (ln is null)
+            var updated = await _loanRepository.UpdateAsync(loanKey, loanDto);
+            if (updated is null)
             {
-                return NotFound($"Loan with Key {LoanKey} not found.");
+                return NotFound($"Loan with Key {loanKey} not found.");
             }
-            ln.Amount = Loan.Amount;
-            ln.StartDate = Loan.StartDate;
-            ln.EndDate = Loan.EndDate;
-            ln.Type = Loan.Type;
-            ln.AccountKey = Loan.AccountKey;
-            return Ok(ln);
+            return Ok(updated);
         }
 
         /// <summary>
         /// Delete a loan by key.
         /// </summary>
         ///
-        /// <param name="LoanKey">
+        /// <param name="loanKey">
         /// The unique key of the loan to delete.
         /// </param>
         ///
@@ -201,16 +166,15 @@ namespace bankOfLeverx.Controllers
         /// <response code="404">
         /// Loan not found.
         /// </response>
-        [HttpDelete("{LoanKey}", Name = "deleteLoan")]
-        public IActionResult delete(int LoanKey)
+        [HttpDelete("{loanKey}", Name = "deleteLoan")]
+        public async Task<IActionResult> Delete(int loanKey)
         {
-            Loan tr = Loans.FirstOrDefault(e => e.Key == LoanKey);
-            if (tr is null)
+            var deleted = await _loanRepository.DeleteAsync(loanKey);
+            if (!deleted)
             {
-                return NotFound($"Loan with key: {LoanKey} not found");
+                return NotFound($"Loan with key: {loanKey} not found");
             }
-            Loans.Remove(tr);
-            return Ok($"Loan with key: {LoanKey} deleted");
+            return Ok($"Loan with key: {loanKey} deleted");
         }
     }
 }
