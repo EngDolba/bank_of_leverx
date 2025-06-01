@@ -1,38 +1,20 @@
-using bankOfLeverx.Models;
+using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
+using BankOfLeverx.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bankOfLeverx.Controllers
+namespace BankOfLeverx.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class EmployeesController : ControllerBase
     {
-        private static readonly string[] Names = ["Nikoloz", "Archil", "Nini"];
-        private static readonly string[] Surnames = ["Dolbaia", "Gachechiladze", "Logua"];
-        private static readonly string[] Positions = ["PL/SQL Developer", "CEO", "Product Owner"];
-
-        private static int initialEmployeeSize = 3;
-        private static int currentEmployeeKey = 1000;
-        private static readonly List<Employee> Employees = new List<Employee>();
-
+        private readonly IEmployeeRepository _employeeRepository;
         private readonly ILogger<EmployeesController> _logger;
 
-        public EmployeesController(ILogger<EmployeesController> logger)
+        public EmployeesController(IEmployeeRepository employeeRepository, ILogger<EmployeesController> logger)
         {
-            for (int index = 0; index < initialEmployeeSize;)
-            {
-                Employees.Add(new Employee
-                {
-                    Key = currentEmployeeKey + 1,
-                    Name = Names[initialEmployeeSize - 1],
-                    Surname = Surnames[initialEmployeeSize - 1],
-                    Position = Positions[initialEmployeeSize - 1],
-                    Branch = "HDOF" // Head Office
-                });
-                currentEmployeeKey++;
-                initialEmployeeSize--;
-            }
-
+            _employeeRepository = employeeRepository;
             _logger = logger;
         }
 
@@ -55,9 +37,9 @@ namespace bankOfLeverx.Controllers
         /// Employee not found.
         /// </response>
         [HttpGet("{employeeKey}", Name = "GetEmployee")]
-        public ActionResult<Employee> Get(int employeeKey)
+        public async Task<ActionResult<Employee>> Get(int employeeKey)
         {
-            var employee = Employees.FirstOrDefault(e => e.Key == employeeKey);
+            var employee = await _employeeRepository.GetByIdAsync(employeeKey);
             if (employee is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
@@ -73,9 +55,9 @@ namespace bankOfLeverx.Controllers
         /// A list of all employee objects.
         /// </returns>
         [HttpGet(Name = "GetEmployees")]
-        public IEnumerable<Employee> get()
+        public async Task<IEnumerable<Employee>> Get()
         {
-            return Employees;
+            return await _employeeRepository.GetAllAsync();
         }
 
         /// <summary>
@@ -94,18 +76,10 @@ namespace bankOfLeverx.Controllers
         /// Employee successfully created.
         /// </response>
         [HttpPost(Name = "PostEmployee")]
-        public IActionResult post([FromBody] EmployeeDTO emp)
+        public async Task<IActionResult> Post([FromBody] EmployeeDTO emp)
         {
-            Employees.Add(new Employee
-            {
-                Key = currentEmployeeKey + 1,
-                Name = emp.Name,
-                Surname = emp.Surname,
-                Position = emp.Position,
-                Branch = emp.Branch
-            });
-            currentEmployeeKey++;
-            return Ok(Employees.FirstOrDefault(e => e.Key == currentEmployeeKey));
+            var newEmployee = await _employeeRepository.CreateAsync(emp);
+            return Ok(newEmployee);
         }
 
         /// <summary>
@@ -131,27 +105,14 @@ namespace bankOfLeverx.Controllers
         /// Employee not found.
         /// </response>
         [HttpPatch("{employeeKey}", Name = "PatchEmployee")]
-        public ActionResult Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
+        public async Task<ActionResult> Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
         {
-            var employee = Employees.FirstOrDefault(e => e.Key == employeeKey);
-            if (employee is null)
+            var updated = await _employeeRepository.PatchAsync(employeeKey, employeePatch);
+            if (updated is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
-
-            if (employeePatch.Name is not null)
-                employee.Name = employeePatch.Name;
-
-            if (employeePatch.Surname is not null)
-                employee.Surname = employeePatch.Surname;
-
-            if (employeePatch.Position is not null)
-                employee.Position = employeePatch.Position;
-
-            if (employeePatch.Branch is not null)
-                employee.Branch = employeePatch.Branch;
-
-            return Ok(employee);
+            return Ok(updated);
         }
 
         /// <summary>
@@ -177,18 +138,14 @@ namespace bankOfLeverx.Controllers
         /// Employee not found.
         /// </response>
         [HttpPut("{employeeKey}", Name = "PutEmployee")]
-        public ActionResult<Employee> Put(int employeeKey, [FromBody] EmployeeDTO employee)
+        public async Task<ActionResult<Employee>> Put(int employeeKey, [FromBody] EmployeeDTO employee)
         {
-            var emp = Employees.FirstOrDefault(e => e.Key == employeeKey);
-            if (emp is null)
+            var updated = await _employeeRepository.UpdateAsync(employeeKey, employee);
+            if (updated is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
-            emp.Name = employee.Name;
-            emp.Surname = employee.Surname;
-            emp.Position = employee.Position;
-            emp.Branch = employee.Branch;
-            return Ok(emp);
+            return Ok(updated);
         }
 
         /// <summary>
@@ -210,14 +167,13 @@ namespace bankOfLeverx.Controllers
         /// Employee not found.
         /// </response>
         [HttpDelete("{employeeKey}", Name = "deleteEmployee")]
-        public IActionResult delete(int employeeKey)
+        public async Task<IActionResult> Delete(int employeeKey)
         {
-            Employee cust = Employees.FirstOrDefault(e => e.Key == employeeKey);
-            if (cust is null)
+            var deleted = await _employeeRepository.DeleteAsync(employeeKey);
+            if (!deleted)
             {
                 return NotFound($"Employee with key: {employeeKey} not found");
             }
-            Employees.Remove(cust);
             return Ok($"Employee with key: {employeeKey} deleted");
         }
     }

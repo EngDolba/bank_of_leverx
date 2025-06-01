@@ -1,4 +1,4 @@
-namespace bankOfLeverx
+namespace BankOfLeverx.Domain.Models
 {
     public class Transaction
     {
@@ -12,5 +12,5 @@ namespace bankOfLeverx
         public required DateTime Date { get; set; }
         public required string Comment { get; set; }
     }
-   
+
 }

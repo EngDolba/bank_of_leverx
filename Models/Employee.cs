@@ -1,4 +1,4 @@
-namespace bankOfLeverx.Models
+namespace BankOfLeverx.Domain.Models
 {
     public class Employee
     {
