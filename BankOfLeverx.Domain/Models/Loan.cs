@@ -2,7 +2,7 @@ namespace BankOfLeverx.Domain.Models
 {
     public class Loan
     {
-        public required int Key { get; set; }
+        public  int Key { get; set; }
         public required double Amount { get; set; }
 
         public required double InitialAmount { get; set; }

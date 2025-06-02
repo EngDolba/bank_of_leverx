@@ -2,7 +2,7 @@ namespace BankOfLeverx.Domain.Models
 {
     public class Transaction
     {
-        public required int Key { get; set; }
+        public  int Key { get; set; }
 
         public required int AccountKey { get; set; }
 

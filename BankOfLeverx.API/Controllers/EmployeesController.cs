@@ -1,6 +1,6 @@
+using BankOfLeverx.Application.Services;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
@@ -9,12 +9,12 @@ namespace BankOfLeverx.Controllers
     [Route("[controller]")]
     public class EmployeesController : ControllerBase
     {
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEmployeeService _employeeService;
         private readonly ILogger<EmployeesController> _logger;
 
-        public EmployeesController(IEmployeeRepository employeeRepository, ILogger<EmployeesController> logger)
+        public EmployeesController(IEmployeeService employeeService, ILogger<EmployeesController> logger)
         {
-            _employeeRepository = employeeRepository;
+            _employeeService = employeeService;
             _logger = logger;
         }
 
@@ -39,7 +39,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{employeeKey}", Name = "GetEmployee")]
         public async Task<ActionResult<Employee>> Get(int employeeKey)
         {
-            var employee = await _employeeRepository.GetByIdAsync(employeeKey);
+            var employee = await _employeeService.GetByIdAsync(employeeKey);
             if (employee is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
@@ -57,7 +57,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet(Name = "GetEmployees")]
         public async Task<IEnumerable<Employee>> Get()
         {
-            return await _employeeRepository.GetAllAsync();
+            return await _employeeService.GetAllAsync();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace BankOfLeverx.Controllers
         [HttpPost(Name = "PostEmployee")]
         public async Task<IActionResult> Post([FromBody] EmployeeDTO emp)
         {
-            var newEmployee = await _employeeRepository.CreateAsync(emp);
+            var newEmployee = await _employeeService.CreateAsync(emp);
             return Ok(newEmployee);
         }
 
@@ -107,7 +107,7 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{employeeKey}", Name = "PatchEmployee")]
         public async Task<ActionResult> Patch(int employeeKey, [FromBody] EmployeePatchDTO employeePatch)
         {
-            var updated = await _employeeRepository.PatchAsync(employeeKey, employeePatch);
+            var updated = await _employeeService.PatchAsync(employeeKey, employeePatch);
             if (updated is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
@@ -140,7 +140,7 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{employeeKey}", Name = "PutEmployee")]
         public async Task<ActionResult<Employee>> Put(int employeeKey, [FromBody] EmployeeDTO employee)
         {
-            var updated = await _employeeRepository.UpdateAsync(employeeKey, employee);
+            var updated = await _employeeService.UpdateAsync(employeeKey, employee);
             if (updated is null)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
@@ -169,7 +169,7 @@ namespace BankOfLeverx.Controllers
         [HttpDelete("{employeeKey}", Name = "deleteEmployee")]
         public async Task<IActionResult> Delete(int employeeKey)
         {
-            var deleted = await _employeeRepository.DeleteAsync(employeeKey);
+            var deleted = await _employeeService.DeleteAsync(employeeKey);
             if (!deleted)
             {
                 return NotFound($"Employee with key: {employeeKey} not found");

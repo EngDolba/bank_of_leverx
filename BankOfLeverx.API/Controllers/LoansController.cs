@@ -1,6 +1,6 @@
 ﻿using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
+using BankOfLeverx.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
@@ -9,12 +9,12 @@ namespace BankOfLeverx.Controllers
     [Route("[controller]")]
     public class LoansController : ControllerBase
     {
-        private readonly ILoanRepository _loanRepository;
+        private readonly ILoanService _loanService;
         private readonly ILogger<LoansController> _logger;
 
-        public LoansController(ILoanRepository loanRepository, ILogger<LoansController> logger)
+        public LoansController(ILoanService loanService, ILogger<LoansController> logger)
         {
-            _loanRepository = loanRepository;
+            _loanService = loanService;
             _logger = logger;
         }
 
@@ -39,7 +39,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{loanKey}", Name = "GetLoan")]
         public async Task<ActionResult<Loan>> Get(int loanKey)
         {
-            var loan = await _loanRepository.GetByIdAsync(loanKey);
+            var loan = await _loanService.GetByIdAsync(loanKey);
             if (loan is null)
             {
                 return NotFound($"Loan with Key {loanKey} not found.");
@@ -57,7 +57,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet(Name = "GetLoans")]
         public async Task<IEnumerable<Loan>> Get()
         {
-            return await _loanRepository.GetAllAsync();
+            return await _loanService.GetAllAsync();
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace BankOfLeverx.Controllers
         [HttpPost(Name = "PostLoan")]
         public async Task<IActionResult> Post([FromBody] LoanDTO loanDto)
         {
-            var newLoan = await _loanRepository.CreateAsync(loanDto);
+            var newLoan = await _loanService.CreateAsync(loanDto);
             return Ok(newLoan);
         }
 
@@ -107,7 +107,7 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{loanKey}", Name = "PatchLoan")]
         public async Task<ActionResult> Patch(int loanKey, [FromBody] LoanPatchDTO loanPatch)
         {
-            var updated = await _loanRepository.PatchAsync(loanKey, loanPatch);
+            var updated = await _loanService.PatchAsync(loanKey, loanPatch);
             if (updated is null)
             {
                 return NotFound($"Loan with Key {loanKey} not found.");
@@ -140,7 +140,7 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{loanKey}", Name = "PutLoan")]
         public async Task<ActionResult<Loan>> Put(int loanKey, [FromBody] LoanDTO loanDto)
         {
-            var updated = await _loanRepository.UpdateAsync(loanKey, loanDto);
+            var updated = await _loanService.UpdateAsync(loanKey, loanDto);
             if (updated is null)
             {
                 return NotFound($"Loan with Key {loanKey} not found.");
@@ -169,7 +169,7 @@ namespace BankOfLeverx.Controllers
         [HttpDelete("{loanKey}", Name = "deleteLoan")]
         public async Task<IActionResult> Delete(int loanKey)
         {
-            var deleted = await _loanRepository.DeleteAsync(loanKey);
+            var deleted = await _loanService.DeleteAsync(loanKey);
             if (!deleted)
             {
                 return NotFound($"Loan with key: {loanKey} not found");

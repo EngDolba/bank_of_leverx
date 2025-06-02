@@ -1,5 +1,4 @@
-﻿using BankOfLeverx.Core.DTO;
-using BankOfLeverx.Domain.Models;
+﻿using BankOfLeverx.Domain.Models;
 using Dapper;
 using System.Data;
 
@@ -16,68 +15,40 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<Customer>> GetAllAsync()
         {
-            var sql = @"SELECT [Key], Name, Surname, Category FROM krn.customers";
+            var sql = @"SELECT [Key], Name, Surname, Category, Branch FROM krn.customers";
             return await _dbConnection.QueryAsync<Customer>(sql);
         }
 
         public async Task<Customer?> GetByIdAsync(int key)
         {
-            var sql = @"SELECT [Key], Name, Surname, Category 
-                        FROM krn.customers WHERE [Key] = @key";
+            var sql = @"SELECT [Key], Name, Surname, Category, Branch FROM krn.customers WHERE [Key] = @key";
             return await _dbConnection.QueryFirstOrDefaultAsync<Customer>(sql, new { key });
         }
 
-        public async Task<Customer> CreateAsync(CustomerDTO customerDto)
+        public async Task<Customer> CreateAsync(Customer customer)
         {
             var getKeySql = "SELECT NEXT VALUE FOR krn.Customer_seq";
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
 
             var insertSql = @"
-                INSERT INTO krn.customers ([Key], Name, Surname, Category)
-                VALUES (@Key, @Name, @Surname, @Category)";
+                INSERT INTO krn.customers ([Key], Name, Surname, Category, Branch)
+                VALUES (@Key, @Name, @Surname, @Category, @Branch)";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
                 Key = newKey,
-                Name = customerDto.Name,
-                Surname = customerDto.Surname,
-                Category = customerDto.Category
+                Name = customer.Name,
+                Surname = customer.Surname,
+                Category = customer.Category,
+                Branch = customer.Branch // int
             });
 
-            return new Customer
-            {
-                Key = newKey,
-                Name = customerDto.Name,
-                Surname = customerDto.Surname,
-                Category = customerDto.Category
-            };
+            customer.Key = newKey;
+            return customer;
         }
 
-        public async Task<Customer?> UpdateAsync(int key, CustomerDTO customerDto)
+        public async Task<Customer?> UpdateAsync(Customer customer)
         {
-            var updateSql = @"
-                UPDATE krn.customers SET
-                    Name = @Name,
-                    Surname = @Surname,
-                    Category = @Category
-                WHERE [Key] = @Key";
-
-            var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new
-            {
-                Key = key,
-                Name = customerDto.Name,
-                Surname = customerDto.Surname,
-                Category = customerDto.Category
-            });
-
-            return affectedRows > 0 ? await GetByIdAsync(key) : null;
-        }
-
-        public async Task<Customer?> PatchAsync(int key, CustomerPatchDTO patch)
-        {
-            var existing = await GetByIdAsync(key);
-            if (existing is null) return null;
-
             var updateSql = @"
                 UPDATE krn.customers SET
                     Name = @Name,
@@ -86,15 +57,16 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                     Branch = @Branch
                 WHERE [Key] = @Key";
 
-            await _dbConnection.ExecuteAsync(updateSql, new
+            var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new
             {
-                Key = key,
-                Name = patch.Name ?? existing.Name,
-                Surname = patch.Surname ?? existing.Surname,
-                Category = patch.Category ?? existing.Category
+                Key = customer.Key,
+                Name = customer.Name,
+                Surname = customer.Surname,
+                Category = customer.Category,
+                Branch = customer.Branch 
             });
 
-            return await GetByIdAsync(key);
+            return affectedRows > 0 ? await GetByIdAsync((int)customer.Key) : null;
         }
 
         public async Task<bool> DeleteAsync(int key)

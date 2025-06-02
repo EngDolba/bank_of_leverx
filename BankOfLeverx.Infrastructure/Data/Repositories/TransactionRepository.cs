@@ -1,10 +1,13 @@
-﻿using BankOfLeverx.Core.DTO;
+﻿// TransactionRepository.cs
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using Dapper;
 using System.Data;
 
 namespace BankOfLeverx.Infrastructure.Data.Repositories
 {
+  
+
     public class TransactionRepository : ITransactionRepository
     {
         private readonly IDbConnection _dbConnection;
@@ -28,7 +31,7 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             return await _dbConnection.QueryFirstOrDefaultAsync<Transaction>(sql, new { key });
         }
 
-        public async Task<Transaction> CreateAsync(TransactionDTO transactionDto)
+        public async Task<Transaction> CreateAsync(Transaction transaction)
         {
             var getKeySql = "SELECT NEXT VALUE FOR krn.Transaction_seq";
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
@@ -40,27 +43,19 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             await _dbConnection.ExecuteAsync(insertSql, new
             {
                 Key = newKey,
-                AccountKey = transactionDto.AccountKey,
-                IsDebit = transactionDto.IsDebit,
-                Category = transactionDto.Category,
-                Amount = transactionDto.Amount,
-                Date = transactionDto.Date,
-                Comment = transactionDto.Comment
+                transaction.AccountKey,
+                transaction.IsDebit,
+                transaction.Category,
+                transaction.Amount,
+                transaction.Date,
+                transaction.Comment
             });
 
-            return new Transaction
-            {
-                Key = newKey,
-                AccountKey = transactionDto.AccountKey,
-                IsDebit = transactionDto.IsDebit,
-                Category = transactionDto.Category,
-                Amount = transactionDto.Amount,
-                Date = transactionDto.Date,
-                Comment = transactionDto.Comment
-            };
+            transaction.Key = newKey;
+            return transaction;
         }
 
-        public async Task<Transaction?> UpdateAsync(int key, TransactionDTO transactionDto)
+        public async Task<Transaction?> UpdateAsync(Transaction transaction)
         {
             var updateSql = @"
                 UPDATE krn.transactions SET
@@ -72,47 +67,8 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                     Comment = @Comment
                 WHERE [Key] = @Key";
 
-            var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new
-            {
-                Key = key,
-                AccountKey = transactionDto.AccountKey,
-                IsDebit = transactionDto.IsDebit,
-                Category = transactionDto.Category,
-                Amount = transactionDto.Amount,
-                Date = transactionDto.Date,
-                Comment = transactionDto.Comment
-            });
-
-            return affectedRows > 0 ? await GetByIdAsync(key) : null;
-        }
-
-        public async Task<Transaction?> PatchAsync(int key, TransactionPatchDTO patch)
-        {
-            var existing = await GetByIdAsync(key);
-            if (existing is null) return null;
-
-            var updateSql = @"
-                UPDATE krn.transactions SET
-                    AccountKey = @AccountKey,
-                    IsDebit = @IsDebit,
-                    Category = @Category,
-                    Amount = @Amount,
-                    Date = @Date,
-                    Comment = @Comment
-                WHERE [Key] = @Key";
-
-            await _dbConnection.ExecuteAsync(updateSql, new
-            {
-                Key = key,
-                AccountKey = patch.AccountKey ?? existing.AccountKey,
-                IsDebit = patch.IsDebit ?? existing.IsDebit,
-                Category = patch.Category ?? existing.Category,
-                Amount = patch.Amount ?? existing.Amount,
-                Date = patch.Date ?? existing.Date,
-                Comment = patch.Comment ?? existing.Comment
-            });
-
-            return await GetByIdAsync(key);
+            var affectedRows = await _dbConnection.ExecuteAsync(updateSql, transaction);
+            return affectedRows > 0 ? transaction : null;
         }
 
         public async Task<bool> DeleteAsync(int key)

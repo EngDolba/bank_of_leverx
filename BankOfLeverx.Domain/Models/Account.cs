@@ -7,7 +7,7 @@ namespace BankOfLeverx.Domain.Models
         public required double Balance { get; set; }
 
         public required int CustomerKey { get; set; }
-        public required int Key { get; set; }
+        public int Key { get; set; }
     }
 
 }

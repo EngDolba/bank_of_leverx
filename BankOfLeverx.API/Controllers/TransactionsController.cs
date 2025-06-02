@@ -1,6 +1,6 @@
-﻿using BankOfLeverx.Core.DTO;
+﻿using BankOfLeverx.Application.Services;
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
@@ -9,12 +9,14 @@ namespace BankOfLeverx.Controllers
     [Route("[controller]")]
     public class TransactionsController : ControllerBase
     {
-        private readonly ITransactionRepository _transactionRepository;
+        private readonly TransactionService _transactionService;
         private readonly ILogger<TransactionsController> _logger;
 
-        public TransactionsController(ITransactionRepository transactionRepository, ILogger<TransactionsController> logger)
+        public TransactionsController(
+            TransactionService transactionService,
+            ILogger<TransactionsController> logger)
         {
-            _transactionRepository = transactionRepository;
+            _transactionService = transactionService;
             _logger = logger;
         }
 
@@ -28,7 +30,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet(Name = "GetTransactions")]
         public async Task<IEnumerable<Transaction>> Get()
         {
-            return await _transactionRepository.GetAllAsync();
+            return await _transactionService.GetAllAsync();
         }
 
         /// <summary>
@@ -52,7 +54,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{TransactionKey}", Name = "GetTransaction")]
         public async Task<ActionResult<Transaction>> Get(int TransactionKey)
         {
-            var transaction = await _transactionRepository.GetByIdAsync(TransactionKey);
+            var transaction = await _transactionService.GetByIdAsync(TransactionKey);
             if (transaction is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
@@ -78,7 +80,7 @@ namespace BankOfLeverx.Controllers
         [HttpPost(Name = "PostTransaction")]
         public async Task<IActionResult> Post([FromBody] TransactionDTO Transaction)
         {
-            var newTransaction = await _transactionRepository.CreateAsync(Transaction);
+            var newTransaction = await _transactionService.CreateAsync(Transaction);
             return Ok(newTransaction);
         }
 
@@ -107,7 +109,7 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{TransactionKey}", Name = "PatchTransaction")]
         public async Task<ActionResult> Patch(int TransactionKey, [FromBody] TransactionPatchDTO Transaction)
         {
-            var updated = await _transactionRepository.PatchAsync(TransactionKey, Transaction);
+            var updated = await _transactionService.PatchAsync(TransactionKey, Transaction);
             if (updated is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
@@ -140,7 +142,7 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{TransactionKey}", Name = "PutTransaction")]
         public async Task<ActionResult<Transaction>> Put(int TransactionKey, [FromBody] TransactionDTO Transaction)
         {
-            var updated = await _transactionRepository.UpdateAsync(TransactionKey, Transaction);
+            var updated = await _transactionService.UpdateAsync(TransactionKey, Transaction);
             if (updated is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
@@ -169,7 +171,7 @@ namespace BankOfLeverx.Controllers
         [HttpDelete("{TransactionKey}", Name = "deleteTransaction")]
         public async Task<IActionResult> Delete(int TransactionKey)
         {
-            var deleted = await _transactionRepository.DeleteAsync(TransactionKey);
+            var deleted = await _transactionService.DeleteAsync(TransactionKey);
             if (!deleted)
             {
                 return NotFound($"Transaction with key: {TransactionKey} not found");

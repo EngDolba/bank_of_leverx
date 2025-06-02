@@ -1,7 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\bank_of_leverx\BankOfLeverx.Core\BankOfLeverx.Core.csproj" />
     <ProjectReference Include="..\BankOfLeverx.Domain\BankOfLeverx.Domain.csproj" />
+    <ProjectReference Include="..\BankOfLeverx.Infrastructure\BankOfLeverx.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

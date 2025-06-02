@@ -1,6 +1,6 @@
 ﻿using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
+using BankOfLeverx.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
@@ -9,12 +9,12 @@ namespace BankOfLeverx.Controllers
     [Route("[controller]")]
     public class AccountsController : ControllerBase
     {
-        private readonly IAccountRepository _accountRepository;
+        private readonly IAccountService _accountService;
         private readonly ILogger<AccountsController> _logger;
 
-        public AccountsController(IAccountRepository accountRepository, ILogger<AccountsController> logger)
+        public AccountsController(IAccountService accountService, ILogger<AccountsController> logger)
         {
-            _accountRepository = accountRepository;
+            _accountService = accountService;
             _logger = logger;
         }
 
@@ -28,7 +28,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet(Name = "GetAccounts")]
         public async Task<IEnumerable<Account>> Get()
         {
-            return await _accountRepository.GetAllAsync();
+            return await _accountService.GetAllAsync();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{AccountKey}", Name = "GetAccount")]
         public async Task<ActionResult<Account>> Get(int AccountKey)
         {
-            var account = await _accountRepository.GetByIdAsync(AccountKey);
+            var account = await _accountService.GetByIdAsync(AccountKey);
             if (account is null)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
@@ -78,7 +78,7 @@ namespace BankOfLeverx.Controllers
         [HttpPost(Name = "PostAccount")]
         public async Task<ActionResult<Account>> Post([FromBody] AccountDTO Account)
         {
-            var newAccount = await _accountRepository.CreateAsync(Account);
+            var newAccount = await _accountService.CreateAsync(Account);
             return Ok(newAccount);
         }
 
@@ -107,7 +107,7 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{AccountKey}", Name = "PatchAccount")]
         public async Task<ActionResult<Account>> Patch(int AccountKey, [FromBody] AccountPatchDTO Account)
         {
-            var updated = await _accountRepository.PatchAsync(AccountKey, Account);
+            var updated = await _accountService.PatchAsync(AccountKey, Account);
             if (updated is null)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
@@ -140,7 +140,7 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{AccountKey}", Name = "PutAccount")]
         public async Task<ActionResult<Account>> Put(int AccountKey, [FromBody] AccountDTO Account)
         {
-            var updated = await _accountRepository.UpdateAsync(AccountKey, Account);
+            var updated = await _accountService.UpdateAsync(AccountKey, Account);
             if (updated is null)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
@@ -169,7 +169,7 @@ namespace BankOfLeverx.Controllers
         [HttpDelete("{AccountKey}", Name = "deleteAccount")]
         public async Task<IActionResult> Delete(int AccountKey)
         {
-            var deleted = await _accountRepository.DeleteAsync(AccountKey);
+            var deleted = await _accountService.DeleteAsync(AccountKey);
             if (!deleted)
             {
                 return NotFound($"Account with key: {AccountKey} not found");

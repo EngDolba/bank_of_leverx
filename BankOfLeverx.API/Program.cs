@@ -1,6 +1,7 @@
 using BankOfLeverx.Infrastructure.Data;
 using BankOfLeverx.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using BankOfLeverx.Application.Services;
 using System.Data;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 
@@ -23,11 +24,22 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddApplicationInsightsTelemetry();
 builder.Services.AddDbContext<AppDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+//
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<TransactionService, TransactionService>();
+
+
+
+
 
 
 

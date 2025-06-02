@@ -7,9 +7,8 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
     {
         Task<IEnumerable<Transaction>> GetAllAsync();
         Task<Transaction?> GetByIdAsync(int key);
-        Task<Transaction> CreateAsync(TransactionDTO Transaction);
-        Task<Transaction?> UpdateAsync(int key, TransactionDTO Transaction);
-        Task<Transaction?> PatchAsync(int key, TransactionPatchDTO TransactionPatch);
+        Task<Transaction> CreateAsync(Transaction Transaction);
+        Task<Transaction?> UpdateAsync(Transaction Transaction);
         Task<bool> DeleteAsync(int key);
     }
 }
