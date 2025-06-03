@@ -1,4 +1,5 @@
-﻿using BankOfLeverx.Application.Interfaces;
+﻿using AutoMapper;
+using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
@@ -6,13 +7,16 @@ using BankOfLeverx.Infrastructure.Data.Repositories;
 namespace BankOfLeverx.Application.Services
 {
 
+
     public class LoanService : ILoanService
     {
         private readonly ILoanRepository _repository;
+        private readonly IMapper _mapper;
 
-        public LoanService(ILoanRepository repository)
+        public LoanService(ILoanRepository repository,IMapper mapper)
         {
             _repository = repository;
+            _mapper     = mapper;
         }
 
         public Task<IEnumerable<Loan>> GetAllAsync()
@@ -27,35 +31,13 @@ namespace BankOfLeverx.Application.Services
 
         public async Task<Loan> CreateAsync(LoanDTO dto)
         {
-            var loan = new Loan
-            {
-                Amount = dto.Amount,
-                InitialAmount = dto.InitialAmount,
-                StartDate = dto.StartDate,
-                EndDate = dto.EndDate,
-                Rate = dto.Rate,
-                Type = dto.Type,
-                BankerKey = dto.BankerKey,
-                AccountKey = dto.AccountKey
-            };
-
+            var loan = _mapper.Map<Loan>(dto);
             return await _repository.CreateAsync(loan);
         }
 
         public async Task<Loan?> UpdateAsync(int key, LoanDTO dto)
         {
-            var loan = new Loan
-            {
-                Key = key,
-                Amount = dto.Amount,
-                InitialAmount = dto.InitialAmount,
-                StartDate = dto.StartDate,
-                EndDate = dto.EndDate,
-                Rate = dto.Rate,
-                Type = dto.Type,
-                BankerKey = dto.BankerKey,
-                AccountKey = dto.AccountKey
-            };
+            var loan = _mapper.Map<Loan>(dto);
             var ln = await _repository.UpdateAsync(loan);
             if (ln is null)
             {
@@ -70,23 +52,11 @@ namespace BankOfLeverx.Application.Services
             var loan = await _repository.GetByIdAsync(key);
             if (loan is null)
                 throw new KeyNotFoundException();
-
-            if (dto.Amount is not null)
-                loan.Amount = dto.Amount.Value;
-            if (dto.InitialAmount is not null)
-                loan.InitialAmount = dto.InitialAmount.Value;
-            if (dto.StartDate is not null)
-                loan.StartDate = dto.StartDate.Value;
-            if (dto.EndDate is not null)
-                loan.EndDate = dto.EndDate.Value;
-            if (dto.Rate is not null)
-                loan.Rate = dto.Rate.Value;
-            if (dto.Type is not null)
-                loan.Type = dto.Type;
-            if (dto.BankerKey is not null)
-                loan.BankerKey = dto.BankerKey.Value;
-            if (dto.AccountKey is not null)
-                loan.AccountKey = dto.AccountKey.Value;
+            if (dto is null)
+                Console.WriteLine("aaaaa");
+            if (_mapper is null)
+                Console.WriteLine("nini");
+           loan = _mapper.Map(dto, loan);
 
             return await _repository.UpdateAsync(loan);
         }
