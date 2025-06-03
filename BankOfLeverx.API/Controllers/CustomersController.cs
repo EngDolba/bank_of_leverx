@@ -21,10 +21,21 @@ namespace BankOfLeverx.Controllers
         /// <summary>
         /// Get a specific customer by key.
         /// </summary>
-        /// <param name="customerKey">The unique key of the customer.</param>
-        /// <returns>The customer object if found.</returns>
-        /// <response code="200">Customer found and returned.</response>
-        /// <response code="404">Customer not found.</response>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer.
+        /// </param>
+        ///
+        /// <returns>
+        /// The customer object if found.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer found and returned.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpGet("{customerKey}", Name = "GetCustomer")]
         public async Task<ActionResult<Customer>> Get(int customerKey)
         {
@@ -39,7 +50,10 @@ namespace BankOfLeverx.Controllers
         /// <summary>
         /// Get all customers.
         /// </summary>
-        /// <returns>A list of all customer objects.</returns>
+        ///
+        /// <returns>
+        /// A list of all customer objects.
+        /// </returns>
         [HttpGet(Name = "GetCustomers")]
         public async Task<IEnumerable<Customer>> Get()
         {
@@ -49,9 +63,18 @@ namespace BankOfLeverx.Controllers
         /// <summary>
         /// Add a new customer.
         /// </summary>
-        /// <param name="customer">Customer object without the key.</param>
-        /// <returns>The added customer with assigned key.</returns>
-        /// <response code="200">Customer successfully created.</response>
+        ///
+        /// <param name="customer">
+        /// Customer object without the key.
+        /// </param>
+        ///
+        /// <returns>
+        /// The added customer with assigned key.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully created.
+        /// </response>
         [HttpPost(Name = "PostCustomer")]
         public async Task<IActionResult> Post([FromBody] CustomerDTO customer)
         {
@@ -62,11 +85,25 @@ namespace BankOfLeverx.Controllers
         /// <summary>
         /// Partially update an existing customer.
         /// </summary>
-        /// <param name="customerKey">The unique key of the customer.</param>
-        /// <param name="customerPatch">Customer patch object.</param>
-        /// <returns>The updated customer object.</returns>
-        /// <response code="200">Customer successfully updated.</response>
-        /// <response code="404">Customer not found.</response>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer.
+        /// </param>
+        ///
+        /// <param name="customerPatch">
+        /// Customer patch object.
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated customer object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully updated.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpPatch("{customerKey}", Name = "PatchCustomer")]
         public async Task<ActionResult> Patch(int customerKey, [FromBody] CustomerPatchDTO customerPatch)
         {
@@ -81,11 +118,25 @@ namespace BankOfLeverx.Controllers
         /// <summary>
         /// Change an existing customer by providing full object.
         /// </summary>
-        /// <param name="customerKey">The unique key of the customer.</param>
-        /// <param name="customer">The new customer data (excluding the key).</param>
-        /// <returns>The updated customer object.</returns>
-        /// <response code="200">Customer successfully replaced.</response>
-        /// <response code="404">Customer not found.</response>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer.
+        /// </param>
+        ///
+        /// <param name="customer">
+        /// The new customer data (excluding the key).
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated customer object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully replaced.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpPut("{customerKey}", Name = "PutCustomer")]
         public async Task<ActionResult<Customer>> Put(int customerKey, [FromBody] CustomerDTO customer)
         {
@@ -100,10 +151,21 @@ namespace BankOfLeverx.Controllers
         /// <summary>
         /// Delete a customer by key.
         /// </summary>
-        /// <param name="customerKey">The unique key of the customer to delete.</param>
-        /// <returns>Status message about the deletion.</returns>
-        /// <response code="200">Customer successfully deleted.</response>
-        /// <response code="404">Customer not found.</response>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer to delete.
+        /// </param>
+        ///
+        /// <returns>
+        /// Status message about the deletion.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully deleted.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
         [HttpDelete("{customerKey}", Name = "deleteCustomer")]
         public async Task<IActionResult> Delete(int customerKey)
         {
