@@ -1,34 +1,21 @@
-﻿using bankOfLeverx.Models;
-using Microsoft.AspNetCore.Http;
+﻿using BankOfLeverx.Application.Services;
+using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bankOfLeverx.Controllers
+namespace BankOfLeverx.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CustomersController : Controller
+    public class CustomersController : ControllerBase
     {
+        private readonly ICustomerService _customerService;
         private readonly ILogger<CustomersController> _logger;
 
-        private static int currentKey = 1000;
-
-        private static List<Customer> Customers = new List<Customer>();
-
-        public CustomersController(ILogger<CustomersController> logger)
+        public CustomersController(ICustomerService customerService, ILogger<CustomersController> logger)
         {
+            _customerService = customerService;
             _logger = logger;
-        }
-
-        /// <summary>
-        /// Get all customers.
-        /// </summary>
-        /// <returns>
-        /// A list of all customer objects.
-        /// </returns>
-        [HttpGet(Name = "GetCustomers")]
-        public IEnumerable<Customer> get()
-        {
-            return Customers;
         }
 
         /// <summary>
@@ -50,14 +37,27 @@ namespace bankOfLeverx.Controllers
         /// Customer not found.
         /// </response>
         [HttpGet("{customerKey}", Name = "GetCustomer")]
-        public ActionResult<Customer> Get(int customerKey)
+        public async Task<ActionResult<Customer>> Get(int customerKey)
         {
-            var customer = Customers.FirstOrDefault(e => e.Key == customerKey);
+            var customer = await _customerService.GetByIdAsync(customerKey);
             if (customer is null)
             {
                 return NotFound($"Customer with Key {customerKey} not found.");
             }
             return Ok(customer);
+        }
+
+        /// <summary>
+        /// Get all customers.
+        /// </summary>
+        ///
+        /// <returns>
+        /// A list of all customer objects.
+        /// </returns>
+        [HttpGet(Name = "GetCustomers")]
+        public async Task<IEnumerable<Customer>> Get()
+        {
+            return await _customerService.GetAllAsync();
         }
 
         /// <summary>
@@ -76,55 +76,10 @@ namespace bankOfLeverx.Controllers
         /// Customer successfully created.
         /// </response>
         [HttpPost(Name = "PostCustomer")]
-        public ActionResult<Customer> Post([FromBody] CustomerDTO customer)
+        public async Task<IActionResult> Post([FromBody] CustomerDTO customer)
         {
-            Customer cust = new Customer
-            {
-                Key = currentKey++,
-                Name = customer.Name,
-                Surname = customer.Surname,
-                Category = customer.Category,
-                Branch = customer.Branch
-            };
-            Customers.Add(cust);
-            return Ok(cust);
-        }
-
-        /// <summary>
-        /// Change an existing customer by providing full object.
-        /// </summary>
-        ///
-        /// <param name="CustomerKey">
-        /// The unique key of the customer.
-        /// </param>
-        ///
-        /// <param name="Customer">
-        /// The new customer data (excluding the key).
-        /// </param>
-        ///
-        /// <returns>
-        /// The updated customer object.
-        /// </returns>
-        ///
-        /// <response code="200">
-        /// Customer successfully replaced.
-        /// </response>
-        /// <response code="404">
-        /// Customer not found.
-        /// </response>
-        [HttpPut("{CustomerKey}", Name = "PutCustomer")]
-        public ActionResult<Customer> put(int CustomerKey, [FromBody] CustomerDTO Customer)
-        {
-            Customer cust = Customers.FirstOrDefault(e => e.Key == CustomerKey);
-            if (cust is null)
-            {
-                return NotFound($"Customer with Key {CustomerKey} not found.");
-            }
-            cust.Name = Customer.Name;
-            cust.Surname = Customer.Surname;
-            cust.Category = Customer.Category;
-            cust.Branch = Customer.Branch;
-            return Ok(cust);
+            var newCustomer = await _customerService.CreateAsync(customer);
+            return Ok(newCustomer);
         }
 
         /// <summary>
@@ -135,7 +90,7 @@ namespace bankOfLeverx.Controllers
         /// The unique key of the customer.
         /// </param>
         ///
-        /// <param name="customer">
+        /// <param name="customerPatch">
         /// Customer patch object.
         /// </param>
         ///
@@ -150,30 +105,47 @@ namespace bankOfLeverx.Controllers
         /// Customer not found.
         /// </response>
         [HttpPatch("{customerKey}", Name = "PatchCustomer")]
-        public ActionResult<Customer> patch(int customerKey, [FromBody] CustomerPatchDto customer)
+        public async Task<ActionResult> Patch(int customerKey, [FromBody] CustomerPatchDTO customerPatch)
         {
-            Customer cust = Customers.FirstOrDefault(e => e.Key == customerKey);
-            if (cust is null)
+            var updated = await _customerService.PatchAsync(customerKey, customerPatch);
+            if (updated is null)
             {
                 return NotFound($"Customer with Key {customerKey} not found.");
             }
-            if (customer.Name is not null)
+            return Ok(updated);
+        }
+
+        /// <summary>
+        /// Change an existing customer by providing full object.
+        /// </summary>
+        ///
+        /// <param name="customerKey">
+        /// The unique key of the customer.
+        /// </param>
+        ///
+        /// <param name="customer">
+        /// The new customer data (excluding the key).
+        /// </param>
+        ///
+        /// <returns>
+        /// The updated customer object.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// Customer successfully replaced.
+        /// </response>
+        /// <response code="404">
+        /// Customer not found.
+        /// </response>
+        [HttpPut("{customerKey}", Name = "PutCustomer")]
+        public async Task<ActionResult<Customer>> Put(int customerKey, [FromBody] CustomerDTO customer)
+        {
+            var updated = await _customerService.UpdateAsync(customerKey, customer);
+            if (updated is null)
             {
-                cust.Name = customer.Name;
+                return NotFound($"Customer with Key {customerKey} not found.");
             }
-            if (customer.Surname is not null)
-            {
-                cust.Surname = customer.Surname;
-            }
-            if (customer.Category is not null)
-            {
-                cust.Category = customer.Category;
-            }
-            if (customer.Branch is not null)
-            {
-                cust.Branch = customer.Branch;
-            }
-            return Ok(cust);
+            return Ok(updated);
         }
 
         /// <summary>
@@ -195,14 +167,13 @@ namespace bankOfLeverx.Controllers
         /// Customer not found.
         /// </response>
         [HttpDelete("{customerKey}", Name = "deleteCustomer")]
-        public IActionResult delete(int customerKey)
+        public async Task<IActionResult> Delete(int customerKey)
         {
-            Customer cust = Customers.FirstOrDefault(e => e.Key == customerKey);
-            if (cust is null)
+            var deleted = await _customerService.DeleteAsync(customerKey);
+            if (!deleted)
             {
                 return NotFound($"Customer with key: {customerKey} not found");
             }
-            Customers.Remove(cust);
             return Ok($"Customer with key: {customerKey} deleted");
         }
     }

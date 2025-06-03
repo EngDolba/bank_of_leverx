@@ -1,19 +1,22 @@
-﻿using bankOfLeverx.Models;
-using Microsoft.AspNetCore.Http;
+﻿using BankOfLeverx.Application.Services;
+using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace bankOfLeverx.Controllers
+namespace BankOfLeverx.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class TransactionsController : Controller
+    public class TransactionsController : ControllerBase
     {
+        private readonly TransactionService _transactionService;
         private readonly ILogger<TransactionsController> _logger;
-        private static int currentKey = 1000;
-        private static List<Transaction> Transactions = new List<Transaction>();
 
-        public TransactionsController(ILogger<TransactionsController> logger)
+        public TransactionsController(
+            TransactionService transactionService,
+            ILogger<TransactionsController> logger)
         {
+            _transactionService = transactionService;
             _logger = logger;
         }
 
@@ -25,9 +28,9 @@ namespace bankOfLeverx.Controllers
         /// A list of all transaction objects.
         /// </returns>
         [HttpGet(Name = "GetTransactions")]
-        public IEnumerable<Transaction> get()
+        public async Task<IEnumerable<Transaction>> Get()
         {
-            return Transactions;
+            return await _transactionService.GetAllAsync();
         }
 
         /// <summary>
@@ -49,14 +52,14 @@ namespace bankOfLeverx.Controllers
         /// Transaction not found.
         /// </response>
         [HttpGet("{TransactionKey}", Name = "GetTransaction")]
-        public ActionResult<Transaction> Get(int TransactionKey)
+        public async Task<ActionResult<Transaction>> Get(int TransactionKey)
         {
-            var Transaction = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (Transaction is null)
+            var transaction = await _transactionService.GetByIdAsync(TransactionKey);
+            if (transaction is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
             }
-            return Ok(Transaction);
+            return Ok(transaction);
         }
 
         /// <summary>
@@ -75,21 +78,10 @@ namespace bankOfLeverx.Controllers
         /// Transaction successfully created.
         /// </response>
         [HttpPost(Name = "PostTransaction")]
-        public ActionResult<Transaction> Post([FromBody] TransactionDTO Transaction)
+        public async Task<IActionResult> Post([FromBody] TransactionDTO Transaction)
         {
-            Transaction acc = new Transaction
-            {
-                Key = currentKey++,
-                AccountKey = Transaction.AccountKey,
-                IsDebit = Transaction.IsDebit,
-                Category = Transaction.Category,
-                Amount = Transaction.Amount,
-                Date = Transaction.Date,
-                Comment = Transaction.Comment,
-            };
-
-            Transactions.Add(acc);
-            return Ok(acc);
+            var newTransaction = await _transactionService.CreateAsync(Transaction);
+            return Ok(newTransaction);
         }
 
         /// <summary>
@@ -115,34 +107,14 @@ namespace bankOfLeverx.Controllers
         /// Transaction not found.
         /// </response>
         [HttpPatch("{TransactionKey}", Name = "PatchTransaction")]
-        public ActionResult<Transaction> patch(int TransactionKey, [FromBody] TransactionPatchDTO Transaction)
+        public async Task<ActionResult> Patch(int TransactionKey, [FromBody] TransactionPatchDTO Transaction)
         {
-            Transaction tr = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (tr is null)
+            var updated = await _transactionService.PatchAsync(TransactionKey, Transaction);
+            if (updated is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
             }
-            if (Transaction.AccountKey is not null)
-            {
-                tr.AccountKey = (int)Transaction.AccountKey;
-            }
-            if (Transaction.IsDebit is not null)
-            {
-                tr.IsDebit = (bool)Transaction.IsDebit;
-            }
-            if (Transaction.Amount is not null)
-            {
-                tr.Amount = (double)Transaction.Amount;
-            }
-            if (Transaction.Date is not null)
-            {
-                tr.Date = (DateTime)Transaction.Date;
-            }
-            if (Transaction.Category is not null)
-            {
-                tr.Category = Transaction.Category;
-            }
-            return Ok(tr);
+            return Ok(updated);
         }
 
         /// <summary>
@@ -168,19 +140,14 @@ namespace bankOfLeverx.Controllers
         /// Transaction not found.
         /// </response>
         [HttpPut("{TransactionKey}", Name = "PutTransaction")]
-        public ActionResult<Transaction> put(int TransactionKey, [FromBody] TransactionDTO Transaction)
+        public async Task<ActionResult<Transaction>> Put(int TransactionKey, [FromBody] TransactionDTO Transaction)
         {
-            Transaction tr = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (tr is null)
+            var updated = await _transactionService.UpdateAsync(TransactionKey, Transaction);
+            if (updated is null)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
             }
-            tr.IsDebit = Transaction.IsDebit;
-            tr.Amount = Transaction.Amount;
-            tr.Date = Transaction.Date;
-            tr.AccountKey = Transaction.AccountKey;
-            tr.Comment = Transaction.Comment;
-            return Ok(tr);
+            return Ok(updated);
         }
 
         /// <summary>
@@ -202,14 +169,13 @@ namespace bankOfLeverx.Controllers
         /// Transaction not found.
         /// </response>
         [HttpDelete("{TransactionKey}", Name = "deleteTransaction")]
-        public IActionResult delete(int TransactionKey)
+        public async Task<IActionResult> Delete(int TransactionKey)
         {
-            Transaction tr = Transactions.FirstOrDefault(e => e.Key == TransactionKey);
-            if (tr is null)
+            var deleted = await _transactionService.DeleteAsync(TransactionKey);
+            if (!deleted)
             {
                 return NotFound($"Transaction with key: {TransactionKey} not found");
             }
-            Transactions.Remove(tr);
             return Ok($"Transaction with key: {TransactionKey} deleted");
         }
     }
