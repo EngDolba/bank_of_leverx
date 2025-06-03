@@ -1,19 +1,21 @@
-﻿using bankOfLeverx.Models;
-using Microsoft.AspNetCore.Http;
+﻿using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using BankOfLeverx.Application.Interfaces;
 
-namespace bankOfLeverx.Controllers
+
+namespace BankOfLeverx.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountsController : Controller
+    public class AccountsController : ControllerBase
     {
+        private readonly IAccountService _accountService;
         private readonly ILogger<AccountsController> _logger;
-        private static int currentKey = 1000;
-        private static List<Account> Accounts = new List<Account>();
 
-        public AccountsController(ILogger<AccountsController> logger)
+        public AccountsController(IAccountService accountService, ILogger<AccountsController> logger)
         {
+            _accountService = accountService;
             _logger = logger;
         }
 
@@ -25,9 +27,9 @@ namespace bankOfLeverx.Controllers
         /// A list of all account objects.
         /// </returns>
         [HttpGet(Name = "GetAccounts")]
-        public IEnumerable<Account> get()
+        public async Task<IEnumerable<Account>> Get()
         {
-            return Accounts;
+            return await _accountService.GetAllAsync();
         }
 
         /// <summary>
@@ -49,14 +51,14 @@ namespace bankOfLeverx.Controllers
         /// Account not found.
         /// </response>
         [HttpGet("{AccountKey}", Name = "GetAccount")]
-        public ActionResult<Account> Get(int AccountKey)
+        public async Task<ActionResult<Account>> Get(int AccountKey)
         {
-            var Account = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (Account is null)
+            var account = await _accountService.GetByIdAsync(AccountKey);
+            if (account is null)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
             }
-            return Ok(Account);
+            return Ok(account);
         }
 
         /// <summary>
@@ -75,19 +77,10 @@ namespace bankOfLeverx.Controllers
         /// Account successfully created.
         /// </response>
         [HttpPost(Name = "PostAccount")]
-        public ActionResult<Account> Post([FromBody] AccountDTO Account)
+        public async Task<ActionResult<Account>> Post([FromBody] AccountDTO Account)
         {
-            Account acc = new Account
-            {
-                Key = currentKey++,
-                Number = Account.Number,
-                PlanCode = Account.PlanCode,
-                Balance = Account.Balance,
-                CustomerKey = Account.CustomerKey,
-                Branch = Account.Branch
-            };
-            Accounts.Add(acc);
-            return Ok(acc);
+            var newAccount = await _accountService.CreateAsync(Account);
+            return Ok(newAccount);
         }
 
         /// <summary>
@@ -113,34 +106,18 @@ namespace bankOfLeverx.Controllers
         /// Account not found.
         /// </response>
         [HttpPatch("{AccountKey}", Name = "PatchAccount")]
-        public ActionResult<Account> patch(int AccountKey, [FromBody] AccountPatchDTO Account)
+        public async Task<ActionResult<Account>> Patch(int AccountKey, [FromBody] AccountPatchDTO Account)
         {
-            Account acc = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (acc is null)
+            try
             {
-                return NotFound($"Account with Key {AccountKey} not found.");
+                var updated = await _accountService.PatchAsync(AccountKey, Account);
+                return Ok(updated);
             }
-            if (Account.CustomerKey is not null)
+            catch (KeyNotFoundException)
             {
-                acc.CustomerKey = (int)Account.CustomerKey;
+                return NotFound($"Account with Key {AccountKey} not found."); 
+
             }
-            if (Account.Number is not null)
-            {
-                acc.Number = Account.Number;
-            }
-            if (Account.PlanCode is not null)
-            {
-                acc.PlanCode = Account.PlanCode;
-            }
-            if (Account.Balance is not null)
-            {
-                acc.Balance = (double)Account.Balance;
-            }
-            if (Account.Branch is not null)
-            {
-                acc.Branch = Account.Branch;
-            }
-            return Ok(acc);
         }
 
         /// <summary>
@@ -166,19 +143,17 @@ namespace bankOfLeverx.Controllers
         /// Account not found.
         /// </response>
         [HttpPut("{AccountKey}", Name = "PutAccount")]
-        public ActionResult<Account> put(int AccountKey, [FromBody] AccountDTO Account)
+        public async Task<ActionResult<Account>> Put(int AccountKey, [FromBody] AccountDTO Account)
         {
-            Account acc = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (acc is null)
+            try
+            { 
+                var updated = await _accountService.UpdateAsync(AccountKey, Account);
+                return Ok(updated);
+            }
+            catch(KeyNotFoundException)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
             }
-            acc.Number = Account.Number;
-            acc.PlanCode = Account.PlanCode;
-            acc.Balance = Account.Balance;
-            acc.CustomerKey = Account.CustomerKey;
-            acc.Branch = Account.Branch;
-            return Ok(acc);
         }
 
         /// <summary>
@@ -200,14 +175,13 @@ namespace bankOfLeverx.Controllers
         /// Account not found.
         /// </response>
         [HttpDelete("{AccountKey}", Name = "deleteAccount")]
-        public IActionResult delete(int AccountKey)
+        public async Task<IActionResult> Delete(int AccountKey)
         {
-            Account acc = Accounts.FirstOrDefault(e => e.Key == AccountKey);
-            if (acc is null)
+            var deleted = await _accountService.DeleteAsync(AccountKey);
+            if (!deleted)
             {
                 return NotFound($"Account with key: {AccountKey} not found");
             }
-            Accounts.Remove(acc);
             return Ok($"Account with key: {AccountKey} deleted");
         }
     }

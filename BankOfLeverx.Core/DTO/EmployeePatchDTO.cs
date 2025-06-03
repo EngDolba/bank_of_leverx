@@ -1,4 +1,4 @@
-﻿namespace bankOfLeverx
+﻿namespace BankOfLeverx.Core.DTO
 {
     public class EmployeePatchDTO
     {
