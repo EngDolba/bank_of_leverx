@@ -1,18 +1,11 @@
-﻿using BankOfLeverx.Core.DTO;
+﻿using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
 
+
 namespace BankOfLeverx.Application.Services
 {
-    public interface ICustomerService
-    {
-        Task<IEnumerable<Customer>> GetAllAsync();
-        Task<Customer?> GetByIdAsync(int key);
-        Task<Customer> CreateAsync(CustomerDTO dto);
-        Task<Customer?> UpdateAsync(int key, CustomerDTO dto);
-        Task<Customer?> PatchAsync(int key, CustomerPatchDTO dto);
-        Task<bool> DeleteAsync(int key);
-    }
 
     public class CustomerService : ICustomerService
     {
@@ -56,17 +49,22 @@ namespace BankOfLeverx.Application.Services
                 Category = dto.Category,
                 Branch   = dto.Branch
             };
+            var cust = await _repository.UpdateAsync(customer);
+            if (cust is null)
+            {
+                throw new KeyNotFoundException();
+            }
 
-            return await _repository.UpdateAsync(customer);
+            return cust;
+
         }
 
         public async Task<Customer?> PatchAsync(int key, CustomerPatchDTO dto)
         {
             var customer = await _repository.GetByIdAsync(key);
             if (customer is null)
-                return null;
+                throw new KeyNotFoundException($"Customer with Key {key} not found.");
 
-            // Apply patch
             if (dto.Name is not null)
                 customer.Name = dto.Name;
             if (dto.Surname is not null)

@@ -1,18 +1,11 @@
-﻿using BankOfLeverx.Core.DTO;
+﻿using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
+using BankOfLeverx.Application.Interfaces;
 
 namespace BankOfLeverx.Application.Services
 {
-    public interface IEmployeeService
-    {
-        Task<IEnumerable<Employee>> GetAllAsync();
-        Task<Employee?> GetByIdAsync(int key);
-        Task<Employee> CreateAsync(EmployeeDTO dto);
-        Task<Employee?> UpdateAsync(int key, EmployeeDTO dto);
-        Task<Employee?> PatchAsync(int key, EmployeePatchDTO dto);
-        Task<bool> DeleteAsync(int key);
-    }
 
     public class EmployeeService : IEmployeeService
     {
@@ -56,15 +49,20 @@ namespace BankOfLeverx.Application.Services
                 Position = dto.Position,
                 Branch = dto.Branch
             };
+            var emp = await _repository.UpdateAsync(employee);
+            if (emp is null)
+            {
+                throw new KeyNotFoundException();
+            }
 
-            return await _repository.UpdateAsync(employee);
+            return emp;
         }
 
         public async Task<Employee?> PatchAsync(int key, EmployeePatchDTO dto)
         {
             var employee = await _repository.GetByIdAsync(key);
             if (employee is null)
-                return null;
+                throw new KeyNotFoundException();
 
             if (dto.Name is not null)
                 employee.Name = dto.Name;

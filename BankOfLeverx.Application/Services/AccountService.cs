@@ -1,18 +1,10 @@
-﻿using BankOfLeverx.Core.DTO;
+﻿using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
 
 namespace BankOfLeverx.Application.Services
 {
-    public interface IAccountService
-    {
-        Task<IEnumerable<Account>> GetAllAsync();
-        Task<Account?> GetByIdAsync(int key);
-        Task<Account> CreateAsync(AccountDTO dto);
-        Task<Account?> UpdateAsync(int key, AccountDTO dto);
-        Task<Account?> PatchAsync(int key, AccountPatchDTO dto);
-        Task<bool> DeleteAsync(int key);
-    }
 
     public class AccountService : IAccountService
     {
@@ -56,15 +48,20 @@ namespace BankOfLeverx.Application.Services
                 Balance = dto.Balance,
                 CustomerKey = dto.CustomerKey
             };
+            var acc = await _repository.UpdateAsync(account);
+            if (acc is null)
+            {
+                throw new KeyNotFoundException();
+            }
 
-            return await _repository.UpdateAsync(account);
+            return acc;
         }
 
         public async Task<Account?> PatchAsync(int key, AccountPatchDTO dto)
         {
             var account = await _repository.GetByIdAsync(key);
             if (account is null)
-                return null;
+                throw new KeyNotFoundException($"account with Key {key} not found.");
 
             if (dto.Number is not null)
                 account.Number = dto.Number;

@@ -1,19 +1,10 @@
-﻿// TransactionService.cs
+﻿using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
 
 namespace BankOfLeverx.Application.Services
 {
-    public interface ITransactionService
-    {
-        Task<IEnumerable<Transaction>> GetAllAsync();
-        Task<Transaction?> GetByIdAsync(int key);
-        Task<Transaction> CreateAsync(TransactionDTO dto);
-        Task<Transaction?> UpdateAsync(int key, TransactionDTO dto);
-        Task<Transaction?> PatchAsync(int key, TransactionPatchDTO dto);
-        Task<bool> DeleteAsync(int key);
-    }
 
     public class TransactionService : ITransactionService
     {
@@ -61,15 +52,20 @@ namespace BankOfLeverx.Application.Services
                 Date = dto.Date,
                 Comment = dto.Comment
             };
+            var tr = await _repository.UpdateAsync(transaction);
+            if (tr is null)
+            {
+                throw new KeyNotFoundException();
+            }
 
-            return await _repository.UpdateAsync(transaction);
+            return tr;
         }
 
         public async Task<Transaction?> PatchAsync(int key, TransactionPatchDTO dto)
         {
             var transaction = await _repository.GetByIdAsync(key);
             if (transaction is null)
-                return null;
+                throw new KeyNotFoundException($"Transaction with Key {key} not found.");   
 
             if (dto.AccountKey is not null)
                 transaction.AccountKey = dto.AccountKey.Value;

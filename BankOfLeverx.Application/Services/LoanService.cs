@@ -1,18 +1,10 @@
-﻿using BankOfLeverx.Core.DTO;
+﻿using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
 
 namespace BankOfLeverx.Application.Services
 {
-    public interface ILoanService
-    {
-        Task<IEnumerable<Loan>> GetAllAsync();
-        Task<Loan?> GetByIdAsync(int key);
-        Task<Loan> CreateAsync(LoanDTO dto);
-        Task<Loan?> UpdateAsync(int key, LoanDTO dto);
-        Task<Loan?> PatchAsync(int key, LoanPatchDTO dto);
-        Task<bool> DeleteAsync(int key);
-    }
 
     public class LoanService : ILoanService
     {
@@ -64,15 +56,20 @@ namespace BankOfLeverx.Application.Services
                 BankerKey = dto.BankerKey,
                 AccountKey = dto.AccountKey
             };
+            var ln = await _repository.UpdateAsync(loan);
+            if (ln is null)
+            {
+                throw new KeyNotFoundException();
+            }
 
-            return await _repository.UpdateAsync(loan);
+            return ln;
         }
 
         public async Task<Loan?> PatchAsync(int key, LoanPatchDTO dto)
         {
             var loan = await _repository.GetByIdAsync(key);
             if (loan is null)
-                return null;
+                throw new KeyNotFoundException();
 
             if (dto.Amount is not null)
                 loan.Amount = dto.Amount.Value;

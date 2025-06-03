@@ -4,9 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using BankOfLeverx.Application.Services;
 using System.Data;
 using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-
-
-
+using BankOfLeverx.Application.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,12 +35,6 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<TransactionService, TransactionService>();
 
-
-
-
-
-
-
 builder.Services.AddScoped<IDbConnection>(sp =>
     new Microsoft.Data.SqlClient.SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -54,7 +46,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 app.UseHttpsRedirection();
 

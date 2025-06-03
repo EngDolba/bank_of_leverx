@@ -1,7 +1,8 @@
 ﻿using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using BankOfLeverx.Application.Interfaces;
+
 
 namespace BankOfLeverx.Controllers
 {
@@ -107,12 +108,16 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{AccountKey}", Name = "PatchAccount")]
         public async Task<ActionResult<Account>> Patch(int AccountKey, [FromBody] AccountPatchDTO Account)
         {
-            var updated = await _accountService.PatchAsync(AccountKey, Account);
-            if (updated is null)
+            try
             {
-                return NotFound($"Account with Key {AccountKey} not found.");
+                var updated = await _accountService.PatchAsync(AccountKey, Account);
+                return Ok(updated);
             }
-            return Ok(updated);
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Account with Key {AccountKey} not found."); 
+
+            }
         }
 
         /// <summary>
@@ -140,12 +145,15 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{AccountKey}", Name = "PutAccount")]
         public async Task<ActionResult<Account>> Put(int AccountKey, [FromBody] AccountDTO Account)
         {
-            var updated = await _accountService.UpdateAsync(AccountKey, Account);
-            if (updated is null)
+            try
+            { 
+                var updated = await _accountService.UpdateAsync(AccountKey, Account);
+                return Ok(updated);
+            }
+            catch(KeyNotFoundException)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
             }
-            return Ok(updated);
         }
 
         /// <summary>

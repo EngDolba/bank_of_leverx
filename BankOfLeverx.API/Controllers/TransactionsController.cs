@@ -78,7 +78,7 @@ namespace BankOfLeverx.Controllers
         /// Transaction successfully created.
         /// </response>
         [HttpPost(Name = "PostTransaction")]
-        public async Task<IActionResult> Post([FromBody] TransactionDTO Transaction)
+        public async Task<ActionResult<Transaction>> Post([FromBody] TransactionDTO Transaction)
         {
             var newTransaction = await _transactionService.CreateAsync(Transaction);
             return Ok(newTransaction);
@@ -109,12 +109,16 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{TransactionKey}", Name = "PatchTransaction")]
         public async Task<ActionResult> Patch(int TransactionKey, [FromBody] TransactionPatchDTO Transaction)
         {
-            var updated = await _transactionService.PatchAsync(TransactionKey, Transaction);
-            if (updated is null)
+            try
             {
-                return NotFound($"Transaction with Key {TransactionKey} not found.");
+                var updated = await _transactionService.PatchAsync(TransactionKey, Transaction);
+                return Ok(updated);
             }
-            return Ok(updated);
+            catch (KeyNotFoundException
+            )
+            {
+               return NotFound($"Transaction with Key {TransactionKey} not found:");
+            }
         }
 
         /// <summary>
@@ -142,14 +146,16 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{TransactionKey}", Name = "PutTransaction")]
         public async Task<ActionResult<Transaction>> Put(int TransactionKey, [FromBody] TransactionDTO Transaction)
         {
-            var updated = await _transactionService.UpdateAsync(TransactionKey, Transaction);
-            if (updated is null)
+            try
+            {
+                var updated = await _transactionService.UpdateAsync(TransactionKey, Transaction);
+                return Ok(updated);
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound($"Transaction with Key {TransactionKey} not found.");
             }
-            return Ok(updated);
         }
-
         /// <summary>
         /// Delete a transaction by key.
         /// </summary>

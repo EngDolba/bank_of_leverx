@@ -1,7 +1,7 @@
 ﻿using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using BankOfLeverx.Application.Interfaces;
 
 namespace BankOfLeverx.Controllers
 {
@@ -76,7 +76,7 @@ namespace BankOfLeverx.Controllers
         /// Loan successfully created.
         /// </response>
         [HttpPost(Name = "PostLoan")]
-        public async Task<IActionResult> Post([FromBody] LoanDTO loanDto)
+        public async Task<ActionResult<Loan>> Post([FromBody] LoanDTO loanDto)
         {
             var newLoan = await _loanService.CreateAsync(loanDto);
             return Ok(newLoan);
@@ -107,12 +107,16 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{loanKey}", Name = "PatchLoan")]
         public async Task<ActionResult> Patch(int loanKey, [FromBody] LoanPatchDTO loanPatch)
         {
-            var updated = await _loanService.PatchAsync(loanKey, loanPatch);
-            if (updated is null)
+            try
             {
-                return NotFound($"Loan with Key {loanKey} not found.");
+                var updated = await _loanService.PatchAsync(loanKey, loanPatch);
+                return Ok(updated);
             }
-            return Ok(updated);
+            catch(KeyNotFoundException)
+            {
+                return NotFound($"Employee with Key {loanKey} not found.");
+
+            }
         }
 
         /// <summary>
@@ -140,12 +144,15 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{loanKey}", Name = "PutLoan")]
         public async Task<ActionResult<Loan>> Put(int loanKey, [FromBody] LoanDTO loanDto)
         {
-            var updated = await _loanService.UpdateAsync(loanKey, loanDto);
-            if (updated is null)
+            try
+            {
+                var updated = await _loanService.UpdateAsync(loanKey, loanDto);
+                return Ok(updated);
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound($"Loan with Key {loanKey} not found.");
             }
-            return Ok(updated);
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-using BankOfLeverx.Application.Services;
+using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +76,7 @@ namespace BankOfLeverx.Controllers
         /// Employee successfully created.
         /// </response>
         [HttpPost(Name = "PostEmployee")]
-        public async Task<IActionResult> Post([FromBody] EmployeeDTO emp)
+        public async Task<ActionResult<Employee>> Post([FromBody] EmployeeDTO emp)
         {
             var newEmployee = await _employeeService.CreateAsync(emp);
             return Ok(newEmployee);
@@ -140,12 +140,17 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{employeeKey}", Name = "PutEmployee")]
         public async Task<ActionResult<Employee>> Put(int employeeKey, [FromBody] EmployeeDTO employee)
         {
-            var updated = await _employeeService.UpdateAsync(employeeKey, employee);
-            if (updated is null)
+            try
+            {
+                var updated = await _employeeService.UpdateAsync(employeeKey, employee);
+                return Ok(updated);
+            }
+            catch(KeyNotFoundException)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
-            return Ok(updated);
+            
+           
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using BankOfLeverx.Application.Services;
+﻿using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -76,7 +76,7 @@ namespace BankOfLeverx.Controllers
         /// Customer successfully created.
         /// </response>
         [HttpPost(Name = "PostCustomer")]
-        public async Task<IActionResult> Post([FromBody] CustomerDTO customer)
+        public async Task<ActionResult<Customer>> Post([FromBody] CustomerDTO customer)
         {
             var newCustomer = await _customerService.CreateAsync(customer);
             return Ok(newCustomer);
@@ -107,12 +107,17 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{customerKey}", Name = "PatchCustomer")]
         public async Task<ActionResult> Patch(int customerKey, [FromBody] CustomerPatchDTO customerPatch)
         {
-            var updated = await _customerService.PatchAsync(customerKey, customerPatch);
-            if (updated is null)
+            try
             {
-                return NotFound($"Customer with Key {customerKey} not found.");
+                var updated = await _customerService.PatchAsync(customerKey, customerPatch);
+                return Ok(updated);
             }
-            return Ok(updated);
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Customer with key: {customerKey} not found");
+            }
+            
+            
         }
 
         /// <summary>
@@ -140,13 +145,17 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{customerKey}", Name = "PutCustomer")]
         public async Task<ActionResult<Customer>> Put(int customerKey, [FromBody] CustomerDTO customer)
         {
-            var updated = await _customerService.UpdateAsync(customerKey, customer);
-            if (updated is null)
+            try
             {
-                return NotFound($"Customer with Key {customerKey} not found.");
+                var updated = await _customerService.UpdateAsync(customerKey, customer);
+                return Ok(updated);
             }
-            return Ok(updated);
+            catch (KeyNotFoundException)
+            {
+                return NotFound($"Customer with key: {customerKey} not found");
+            }
         }
+
 
         /// <summary>
         /// Delete a customer by key.

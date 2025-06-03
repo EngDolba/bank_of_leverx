@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\bank_of_leverx\BankOfLeverx.Core\BankOfLeverx.Core.csproj" />
     <ProjectReference Include="..\BankOfLeverx.Domain\BankOfLeverx.Domain.csproj" />
     <ProjectReference Include="..\BankOfLeverx.Infrastructure\BankOfLeverx.Infrastructure.csproj" />
