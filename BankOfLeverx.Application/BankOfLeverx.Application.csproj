@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="Cqrs" Version="5.2.3.70" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="12.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
   </ItemGroup>
 
@@ -8,6 +12,11 @@
     <ProjectReference Include="..\..\bank_of_leverx\BankOfLeverx.Core\BankOfLeverx.Core.csproj" />
     <ProjectReference Include="..\BankOfLeverx.Domain\BankOfLeverx.Domain.csproj" />
     <ProjectReference Include="..\BankOfLeverx.Infrastructure\BankOfLeverx.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Handlers\" />
+    <Folder Include="Commands\" />
   </ItemGroup>
 
   <PropertyGroup>

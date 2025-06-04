@@ -1,7 +1,13 @@
-﻿using BankOfLeverx.Core.DTO;
-using BankOfLeverx.Domain.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
 using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Application.Validators;
+using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using BankOfLeverx.Application.CQRS.Handlers;
+using BankOfLeverx.Application.CQRS.Queries;
+using BankOfLeverx.Application.CQRS.Commands;
 
 namespace BankOfLeverx.Controllers
 {
@@ -9,13 +15,14 @@ namespace BankOfLeverx.Controllers
     [Route("[controller]")]
     public class LoansController : ControllerBase
     {
-        private readonly ILoanService _loanService;
-        private readonly ILogger<LoansController> _logger;
+        private readonly IMediator _loanMediator;
+        private readonly LoanValidator _loanValidator;
 
-        public LoansController(ILoanService loanService, ILogger<LoansController> logger)
+
+        public LoansController(IMediator loanService, LoanValidator loanValidator)
         {
-            _loanService = loanService;
-            _logger = logger;
+            _loanMediator = loanService;
+            _loanValidator = loanValidator;
         }
 
         /// <summary>
@@ -39,7 +46,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{loanKey}", Name = "GetLoan")]
         public async Task<ActionResult<Loan>> Get(int loanKey)
         {
-            var loan = await _loanService.GetByIdAsync(loanKey);
+            var loan = await _loanMediator.Send(new GetLoanByIdQuery(loanKey)); 
             if (loan is null)
             {
                 return NotFound($"Loan with Key {loanKey} not found.");
@@ -57,7 +64,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet(Name = "GetLoans")]
         public async Task<IEnumerable<Loan>> Get()
         {
-            return await _loanService.GetAllAsync();
+            return await _loanMediator.Send(new GetAllLoansQuery());
         }
 
         /// <summary>
@@ -78,7 +85,12 @@ namespace BankOfLeverx.Controllers
         [HttpPost(Name = "PostLoan")]
         public async Task<ActionResult<Loan>> Post([FromBody] LoanDTO loanDto)
         {
-            var newLoan = await _loanService.CreateAsync(loanDto);
+            var validationResult = _loanValidator.Validate(loanDto);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+            var newLoan = await _loanMediator.Send(new CreateLoanCommand(loanDto));
             return Ok(newLoan);
         }
 
@@ -107,9 +119,10 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{loanKey}", Name = "PatchLoan")]
         public async Task<ActionResult> Patch(int loanKey, [FromBody] LoanPatchDTO loanPatch)
         {
+         
             try
             {
-                var updated = await _loanService.PatchAsync(loanKey, loanPatch);
+                var updated = await _loanMediator.Send(new PatchLoanCommand(loanKey,loanPatch));
                 return Ok(updated);
             }
             catch(KeyNotFoundException)
@@ -144,9 +157,15 @@ namespace BankOfLeverx.Controllers
         [HttpPut("{loanKey}", Name = "PutLoan")]
         public async Task<ActionResult<Loan>> Put(int loanKey, [FromBody] LoanDTO loanDto)
         {
+            var validationResult = _loanValidator.Validate(loanDto);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             try
             {
-                var updated = await _loanService.UpdateAsync(loanKey, loanDto);
+                var updated = await _loanMediator.Send(new UpdateLoanCommand(loanKey, loanDto));
                 return Ok(updated);
             }
             catch (KeyNotFoundException)
@@ -176,7 +195,7 @@ namespace BankOfLeverx.Controllers
         [HttpDelete("{loanKey}", Name = "deleteLoan")]
         public async Task<IActionResult> Delete(int loanKey)
         {
-            var deleted = await _loanService.DeleteAsync(loanKey);
+            var deleted = await _loanMediator.Send(new DeleteLoanCommand(loanKey));
             if (!deleted)
             {
                 return NotFound($"Loan with key: {loanKey} not found");

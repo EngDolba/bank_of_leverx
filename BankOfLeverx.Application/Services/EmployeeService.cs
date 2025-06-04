@@ -69,9 +69,9 @@ namespace BankOfLeverx.Application.Services
             if (dto.Surname is not null)
                 employee.Surname = dto.Surname;
             if (dto.Position is not null)
-                employee.Position = dto.Position;
+                employee.Position = (int)dto.Position;
             if (dto.Branch is not null)
-                employee.Branch = dto.Branch;
+                employee.Branch = (int)dto.Branch;
 
             return await _repository.UpdateAsync(employee);
         }

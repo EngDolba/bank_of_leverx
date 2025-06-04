@@ -1,10 +1,17 @@
+using BankOfLeverx.Application.CQRS.Handlers;
+using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Application.Services;
+using BankOfLeverx.Application.Validators;
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Infrastructure.Data;
 using BankOfLeverx.Infrastructure.Data.Repositories;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using BankOfLeverx.Application.Services;
 using System.Data;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-using BankOfLeverx.Application.Interfaces;
+
+
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +41,16 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<TransactionService, TransactionService>();
+//
+builder.Services.AddAutoMapper(typeof(MapProfile));
+//
+builder.Services.AddValidatorsFromAssemblyContaining<LoanValidator>();
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssembly(typeof(DeleteLoanCommandHandler).Assembly);
+});
+
+
 
 builder.Services.AddScoped<IDbConnection>(sp =>
     new Microsoft.Data.SqlClient.SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -79,11 +79,10 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                     branch = @branch
                 WHERE [key] = @key";
 
-            // Use values from employeePatch if set, else fallback to existing employee's values
-            var name = string.IsNullOrEmpty(employeePatch.Name) ? existing.Name : employeePatch.Name;
-            var surname = string.IsNullOrEmpty(employeePatch.Surname) ? existing.Surname : employeePatch.Surname;
-            var position = string.IsNullOrEmpty(employeePatch.Position) ? existing.Position : employeePatch.Position;
-            var branch = string.IsNullOrEmpty(employeePatch.Branch) ? existing.Branch : employeePatch.Branch;
+            var name = employeePatch.Name ;
+            var surname = employeePatch.Surname;
+            var position = employeePatch.Position;
+            var branch = employeePatch.Branch;
 
             await _dbConnection.ExecuteAsync(updateSql, new
             {
