@@ -1,10 +1,12 @@
 using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class EmployeesController : ControllerBase

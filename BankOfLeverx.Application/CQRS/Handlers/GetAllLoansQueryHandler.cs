@@ -11,16 +11,16 @@ namespace BankOfLeverx.Application.CQRS.Handlers
 {
     public class GetAllLoansQueryHandler : IRequestHandler<GetAllLoansQuery, IEnumerable<Loan>>
     {
-        private readonly ILoanRepository _repository;
+        private readonly ILoanService _service;
 
-        public GetAllLoansQueryHandler(ILoanRepository repository)
+        public GetAllLoansQueryHandler(ILoanService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         public Task<IEnumerable<Loan>> Handle(GetAllLoansQuery request, CancellationToken cancellationToken)
         {
-            return _repository.GetAllAsync();
+            return _service.GetAllAsync();
         }
     }
 }

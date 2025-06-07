@@ -2,10 +2,12 @@
 using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 using BankOfLeverx.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class AccountsController : ControllerBase

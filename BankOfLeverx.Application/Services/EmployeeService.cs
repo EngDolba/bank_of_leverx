@@ -2,7 +2,6 @@
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
-using BankOfLeverx.Application.Interfaces;
 
 namespace BankOfLeverx.Application.Services
 {

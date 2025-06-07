@@ -25,5 +25,6 @@ public class MapProfile : Profile
                opt.Condition(src => src.BankerKey.HasValue))
            .ForMember(dest => dest.AccountKey, opt =>
                opt.Condition(src => src.AccountKey.HasValue));
+
     }
 }
