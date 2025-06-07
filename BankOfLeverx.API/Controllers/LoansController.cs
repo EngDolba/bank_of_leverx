@@ -1,16 +1,18 @@
 ﻿using Azure.Core;
+using BankOfLeverx.Application.CQRS.Commands;
+using BankOfLeverx.Application.CQRS.Handlers;
+using BankOfLeverx.Application.CQRS.Queries;
 using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Application.Validators;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BankOfLeverx.Application.CQRS.Handlers;
-using BankOfLeverx.Application.CQRS.Queries;
-using BankOfLeverx.Application.CQRS.Commands;
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class LoansController : ControllerBase

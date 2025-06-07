@@ -4,6 +4,7 @@ using MediatR;
 
 namespace BankOfLeverx.Application.CQRS.Commands
 {
-    public record CreateLoanCommand(LoanDTO Loan) : IRequest<Loan>;
+    public record
+        CreateLoanCommand(LoanDTO Loan) : IRequest<Loan>;
 
 }
