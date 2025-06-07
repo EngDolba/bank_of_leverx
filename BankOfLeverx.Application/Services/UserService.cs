@@ -93,25 +93,40 @@ namespace BankOfLeverx.Application.Services
 
         public string GenerateJwtToken(User user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]!));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWTKey"]!));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim("userId", user.Key.ToString()),
-                new Claim(ClaimTypes.Role, user.Role.ToString())
-            };
 
+                new Claim(ClaimTypes.Role, "1")
+            };
+            Console.WriteLine(user.Role.ToString());
             var token = new JwtSecurityToken(
-                issuer: _configuration["JwtSettings:Issuer"],
-                audience: _configuration["JwtSettings:Audience"],
+                issuer: _configuration["JWTIssuer"],
+                audience: _configuration["JWTAudience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(int.Parse(_configuration["JwtSettings:ExpiresInMinutes"]!)),
+                expires: DateTime.UtcNow.AddMinutes(int.Parse(_configuration["JWTExpiration"]!)),
                 signingCredentials: credentials
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        public async Task<string> AuthenticateAsync(string username, string password)
+        {
+            var user = await _repository.GetByUsernameAsync(username);
+            if(user is null)
+              throw new UnauthorizedAccessException("Invalid credentials.");
+            Console.WriteLine(user.Username+"aa");
+
+            var hasher = new PasswordHasher<User>();
+            var result = hasher.VerifyHashedPassword(user, user.HashedPassword, password);
+            if (result != PasswordVerificationResult.Success)
+                throw new UnauthorizedAccessException("Invalid credentials.");
+
+            var token = GenerateJwtToken(user);
+            return token;
+        }
+
     }
 }

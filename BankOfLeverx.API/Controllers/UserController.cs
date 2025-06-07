@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="1")]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -195,17 +195,16 @@ namespace BankOfLeverx.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Login model)
         {
-            var user = await _UserService.GetByUsernameAsync(model.Username);
-            if (user == null)
+            try
+            {
+                var token = await _UserService.AuthenticateAsync(model.Username, model.Password);
+                return Ok(new { Token = token });
+            }
+            catch (UnauthorizedAccessException)
+            {
                 return Unauthorized("Invalid credentials");
-
-            var hasher = new PasswordHasher<User>();
-            var result = hasher.VerifyHashedPassword(user, user.HashedPassword, model.Password);
-            if (result != PasswordVerificationResult.Success)
-                return Unauthorized("Invalid credentials");
-
-            var token = _UserService.GenerateJwtToken(user);
-            return Ok(new { Token = token });
+            }
+           
         }
 
     }

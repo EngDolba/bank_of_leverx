@@ -13,7 +13,8 @@ namespace BankOfLeverx.Application.Interfaces
         Task<bool> DeleteAsync(int key);
         Task<User?> GetByUsernameAsync(string username);
 
-        public string GenerateJwtToken(User user);
+        Task<string> AuthenticateAsync(string username, string password);
+        string GenerateJwtToken(User user);
         
     }
 }

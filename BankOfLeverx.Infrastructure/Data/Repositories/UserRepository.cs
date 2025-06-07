@@ -15,14 +15,14 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            var sql = @"SELECT [Key], username, hashedPassword, RoleKey
+            var sql = @"SELECT [Key], username, hashedPassword, Role
                         FROM krn.Users";
             return await _dbConnection.QueryAsync<User>(sql);
         }
 
         public async Task<User?> GetByIdAsync(int key)
         {
-            var sql = @"SELECT [Key], username, hashedPassword, RoleKey
+            var sql = @"SELECT [Key], username, hashedPassword, Role
                         FROM krn.Users
                         WHERE [Key] = @key";
             return await _dbConnection.QueryFirstOrDefaultAsync<User>(sql, new { key });
@@ -34,15 +34,15 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
 
             var insertSql = @"
-                INSERT INTO krn.Users ([Key], username, hashedPassword, RoleKey)
-                VALUES (@Key, @username, @hashedPassword, @RoleKey)";
+                INSERT INTO krn.Users ([Key], username, hashedPassword, Role)
+                VALUES (@Key, @username, @hashedPassword, @Role)";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
                 Key = newKey,
                 username = user.Username,
                 hashedPassword = user.HashedPassword,
-                RoleKey = user.Role
+                Role = user.Role
             });
             user. Key = newKey;
             return user;
@@ -54,7 +54,7 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                 UPDATE krn.Users SET
                     username = @username,
                     hashedPassword = @hashedPassword,
-                    RoleKey = @RoleKey
+                    Role = @Role
                 WHERE [Key] = @Key";
 
             var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new
@@ -62,7 +62,7 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                 Key = user.Key,
                 username = user.Username,
                 hashedPassword = user.HashedPassword,
-                RoleKey = user.Role
+                Role = user.Role
             });
 
             return affectedRows > 0 ? await GetByIdAsync(user.Key) : null;
@@ -77,11 +77,13 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            var getSql = "SELECT [Key], username, hashedPassword, RoleKey FROM krn.Users WHERE username = @Username";
-            return await _dbConnection.QueryFirstOrDefaultAsync<User>(getSql, new
+            var getSql = "SELECT [Key], username, hashedPassword, Role FROM krn.Users WHERE username = @Username";
+            var user = await _dbConnection.QueryFirstOrDefaultAsync<User>(getSql, new
             {
                 Username = username
             });
+            Console.WriteLine(user.Role+"rep");
+            return user;
         }
     }
 }
