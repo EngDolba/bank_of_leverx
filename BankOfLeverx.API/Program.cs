@@ -16,7 +16,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Configuration.AddEnvironmentVariables();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Swagger setup
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -53,9 +54,12 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddValidatorsFromAssemblyContaining<LoanValidator>();
 
 builder.Services.AddApplicationInsightsTelemetry();
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-//
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<ILoanRepository, LoanRepository>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
@@ -63,7 +67,6 @@ builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-//
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(typeof(GetAllLoansQuery).Assembly);
@@ -72,8 +75,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(DeleteLoanCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(PatchLoanCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(UpdateLoanCommand).Assembly);
-
 });
+
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
@@ -81,11 +84,11 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
-//
 builder.Services.AddAutoMapper(typeof(MapProfile).Assembly);
 
 builder.Services.AddScoped<IDbConnection>(sp =>
     new Microsoft.Data.SqlClient.SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -101,32 +104,55 @@ builder.Services.AddAuthentication(x =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["JWTIssuer"],
         ValidAudience = builder.Configuration["JWTAudience"],
-        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWTKey"]))
+        IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
+            System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWTKey"]))
     };
 });
 
 builder.Services.AddAuthorization();
 
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var app = builder.Build();
+
+    var logger = app.Services.GetRequiredService<ILogger<Program>>();
+
+    logger.LogInformation("Application is starting...");
+
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+
+    app.MapHealthChecks("health");
+
+    app.UseHttpsRedirection();
+
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    foreach (var kvp in builder.Configuration.AsEnumerable())
+    {
+        Console.WriteLine($"{kvp.Key} = {kvp.Value}");
+    }
+
+    app.MapControllers();
+
+    logger.LogInformation("Application started successfully.");
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthentication();
-
-app.UseAuthorization();
-foreach (var kvp in builder.Configuration.AsEnumerable())
+catch (Exception ex)
 {
-    Console.WriteLine($"{kvp.Key} = {kvp.Value}");
+    using var loggerFactory = LoggerFactory.Create(builder =>
+    {
+        builder.AddConsole();
+        builder.SetMinimumLevel(LogLevel.Critical);
+    });
+    var logger = loggerFactory.CreateLogger("Startup");
+
+    logger.LogCritical(ex, "Application failed to start.");
+
+    throw;
 }
-
-app.MapControllers();
-
-app.Run();

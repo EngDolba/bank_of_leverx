@@ -183,6 +183,7 @@ namespace BankOfLeverx.Controllers
             var deleted = await _customerService.DeleteAsync(customerKey);
             if (!deleted)
             {
+                _logger.LogWarning($"Customer with key: {customerKey} not found for deletion.");
                 return NotFound($"Customer with key: {customerKey} not found");
             }
             return Ok($"Customer with key: {customerKey} deleted");

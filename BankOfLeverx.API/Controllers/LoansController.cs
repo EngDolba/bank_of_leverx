@@ -204,5 +204,32 @@ namespace BankOfLeverx.Controllers
             }
             return Ok($"Loan with key: {loanKey} deleted");
         }
+        /// <summary>
+        /// subtract interest from a loan by key.
+        /// </summary>
+        ///
+        /// <param name="loanKey">
+        /// The unique key of the loan to delete.
+        /// </param>
+        ///
+        /// <returns>
+        /// Status message about the interest payoff.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// interest successfully paid off.
+        /// </response>
+        /// <response code="404">
+        /// Loan not found.
+        /// </response>
+        [HttpPost("{loanKey}", Name = "interestSubtract")]
+        public async Task<ActionResult> subtractInterest(int loanKey)
+        {
+            var subtracted = await _loanMediator.Send(new SubtractInterestCommand(loanKey));
+            if(subtracted is null)
+              return NotFound($"Loan with key: {loanKey} not found");
+            return Ok($"Interest sucessfully paid off from: {loanKey}");
+
+        }
     }
 }

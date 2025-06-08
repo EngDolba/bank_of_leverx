@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\bank_of_leverx\BankOfLeverx.Core\BankOfLeverx.Core.csproj" />
+    <ProjectReference Include="..\BankOfLeverx.Application\BankOfLeverx.Application.csproj" />
+    <ProjectReference Include="..\BankOfLeverx.Domain\BankOfLeverx.Domain.csproj" />
+    <ProjectReference Include="..\BankOfLeverx.Infrastructure\BankOfLeverx.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

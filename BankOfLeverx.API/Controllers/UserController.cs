@@ -44,9 +44,11 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{UserKey}", Name = "GetUser")]
         public async Task<ActionResult<User>> Get(int UserKey)
         {
+            _logger.LogInformation("Fetching user with key: {UserKey} at: {DateTime}", UserKey, DateTime.Now);
             var User = await _UserService.GetByIdAsync(UserKey);
             if (User is null)
             {
+                _logger.LogWarning("User with key: {UserKey} not found at: {DateTime}", UserKey, DateTime.Now);
                 return NotFound($"User with Key {UserKey} not found.");
             }
             return Ok(User);
@@ -83,7 +85,9 @@ namespace BankOfLeverx.Controllers
         [HttpPost(Name = "PostUser")]
         public async Task<ActionResult<User>> Post([FromBody] UserDTO User)
         {
+
             var newUser = await _UserService.CreateAsync(User);
+            _logger.LogInformation("User with username: {Username} created successfully at: {DateTime}",User.Username,DateTime.Now);
             return Ok(newUser);
         }
 
@@ -152,11 +156,14 @@ namespace BankOfLeverx.Controllers
         {
             try
             {
+                
                 var updated = await _UserService.UpdateAsync(UserKey, User);
+                _logger.LogInformation("User with key: {UserKey} updated successfully at: {DateTime}", UserKey, DateTime.Now);
                 return Ok(updated);
             }
             catch (KeyNotFoundException)
             {
+                _logger.LogWarning("Attempted to update non-existing user with key: {UserKey} at: {DateTime}", UserKey, DateTime.Now);
                 return NotFound($"User with key: {UserKey} not found");
             }
         }
@@ -186,6 +193,7 @@ namespace BankOfLeverx.Controllers
             var deleted = await _UserService.DeleteAsync(UserKey);
             if (!deleted)
             {
+                _logger.LogWarning("Attempted to delete non-existing user with key: {UserKey} at: {DateTime}", UserKey, DateTime.Now);
                 return NotFound($"User with key: {UserKey} not found");
             }
             return Ok($"User with key: {UserKey} deleted");
@@ -197,11 +205,14 @@ namespace BankOfLeverx.Controllers
         {
             try
             {
+
                 var token = await _UserService.AuthenticateAsync(model.Username, model.Password);
+                _logger.LogInformation("User {Username} logged in successfully at: {DateTime}",model.Username,DateTime.Now);
                 return Ok(new { Token = token });
             }
             catch (UnauthorizedAccessException)
             {
+                _logger.LogWarning("Failed login attempt for user {Username} at: {DateTime}",model.Username,DateTime.Now);
                 return Unauthorized("Invalid credentials");
             }
            

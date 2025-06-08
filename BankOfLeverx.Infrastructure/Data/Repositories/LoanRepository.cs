@@ -32,7 +32,6 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
         {
             var getKeySql = "SELECT NEXT VALUE FOR lnm.Loan_seq";
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
-
             var insertSql = @"
                 INSERT INTO lnm.loans ([Key], Amount, InitialAmount, StartDate, EndDate, Rate, Type, BankerKey, AccountKey)
                 VALUES (@Key, @Amount, @InitialAmount, @StartDate, @EndDate, @Rate, @Type, @BankerKey, @AccountKey)";

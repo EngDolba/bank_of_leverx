@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
@@ -72,13 +73,12 @@ namespace BankOfLeverx.Application.Services
             var loan = await GetByIdAsync(key);
             if (loan is null)
                 throw new KeyNotFoundException($"Loan with key {key} not found.");
-            double interest = loan.InitialAmount * (loan.Rate/1200);
+            double interest = loan.Amount * (loan.Rate/1200);
             double amt = Math.Max(loan.Amount - interest, 0);
             Console.WriteLine(interest+"int");
             Console.WriteLine(amt + "amt");
             loan.Amount = amt;
-            var loanDTO = _mapper.Map<LoanDTO>(loan);
-            var updatedLoan = await UpdateAsync(key, loanDTO );
+            var updatedLoan = await UpdateAsync(key, _mapper.Map<LoanDTO>(loan));
             return updatedLoan;
         }
     }
