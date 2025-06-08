@@ -1,6 +1,7 @@
 ﻿using BankOfLeverx.Application.CQRS.Commands;
 using BankOfLeverx.Application.CQRS.Queries;
 using BankOfLeverx.Application.Exceptions;
+using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Application.Validators;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
@@ -17,12 +18,14 @@ namespace BankOfLeverx.Controllers
     {
         private readonly IMediator _loanMediator;
         private readonly LoanValidator _loanValidator;
+        private readonly ILoanPaymentService _loanPaymentService;
 
 
-        public LoansController(IMediator loanService, LoanValidator loanValidator)
+        public LoansController(IMediator loanService, LoanValidator loanValidator,ILoanPaymentService loanPaymentService)
         {
             _loanMediator = loanService;
             _loanValidator = loanValidator;
+            _loanPaymentService = loanPaymentService;
         }
 
         /// <summary>
@@ -220,18 +223,21 @@ namespace BankOfLeverx.Controllers
         /// <response code="404">
         /// Loan not found.
         /// </response>
+        /// <response code="422">
+        /// request does not make sense on business level
+        /// </response>
         [HttpPost("{loanKey}", Name = "interestSubtract")]
         public async Task<ActionResult> subtractInterest(int loanKey)
         {
             try
             {
-                var subtracted = await _loanMediator.Send(new SubtractInterestCommand(loanKey));
+                var subtracted = await _loanPaymentService.SubtractInterestAsync(loanKey);
                 return Ok($"Interest sucessfully paid off from: {loanKey}");
 
             }
             catch (InsufficientFundsException)
             {
-                return BadRequest($"insufficient balance on account tied with loan {loanKey}");
+                return UnprocessableEntity($"insufficient balance on account tied with loan {loanKey}");
             }
             catch (KeyNotFoundException ex)
             {
@@ -239,7 +245,7 @@ namespace BankOfLeverx.Controllers
             }
             catch (LoanPaidOffException)
             {
-                return BadRequest($"Loan with Key {loanKey} is already paid off.");
+                return UnprocessableEntity($"Loan with Key {loanKey} is already paid off.");
             }
             
 

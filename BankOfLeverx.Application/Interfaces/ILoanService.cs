@@ -14,5 +14,7 @@ namespace BankOfLeverx.Application.Interfaces
         Task<Loan?> UpdateAsync(int key, LoanDTO dto);
         Task<Loan?> PatchAsync(int key, LoanPatchDTO dto);
         Task<bool> DeleteAsync(int key);
+        double calculateInterest(Loan loan);
+
     }
 }

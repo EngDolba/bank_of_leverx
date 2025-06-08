@@ -83,6 +83,8 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILoanPaymentService, LoanPaymentService>();
+
 
 builder.Services.AddAutoMapper(typeof(MapProfile).Assembly);
 

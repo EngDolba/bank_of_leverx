@@ -92,5 +92,21 @@ namespace BankOfLeverx.Application.Services
             var updatedLoan = await UpdateAsync(key, loanDTO);
             return updatedLoan;
         }
+        public double calculateInterest(Loan loan)
+        {
+            double interest = loan.InitialAmount * (loan.Rate / 1200);
+            double amt = Math.Max(loan.Amount - interest, 0);
+            interest = Math.Min(amt, interest);
+            if (interest == 0)
+            {
+                throw new LoanPaidOffException("loan is already paid Off");
+            }
+            loan.Amount = amt;
+            if (loan.Amount == 0)
+            {
+                loan.EndDate = DateTime.Now;
+            }
+            return interest;
+        }
     }
 }

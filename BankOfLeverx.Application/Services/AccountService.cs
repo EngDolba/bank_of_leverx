@@ -87,7 +87,7 @@ namespace BankOfLeverx.Application.Services
             {
                 throw new KeyNotFoundException($"Account with key {key} not found.");
             }
-            if (account.Balance < amount)
+            if (account.Balance < Math.Abs(amount))
                 throw new InsufficientFundsException("Not enough funds");
             account.Balance += amount;
             var updatedAccount = await _repository.UpdateAsync(account);
