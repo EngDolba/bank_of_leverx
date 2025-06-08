@@ -15,6 +15,6 @@ namespace BankOfLeverx.Application.Interfaces
 
         Task<string> AuthenticateAsync(string username, string password);
         string GenerateJwtToken(User user);
-        
+
     }
 }

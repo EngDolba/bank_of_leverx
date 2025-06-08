@@ -1,5 +1,4 @@
 ﻿using BankOfLeverx.Application.Interfaces;
-using BankOfLeverx.Application.Services;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -120,7 +119,7 @@ namespace BankOfLeverx.Controllers
             catch (KeyNotFoundException
             )
             {
-               return NotFound($"Transaction with Key {TransactionKey} not found:");
+                return NotFound($"Transaction with Key {TransactionKey} not found:");
             }
         }
 

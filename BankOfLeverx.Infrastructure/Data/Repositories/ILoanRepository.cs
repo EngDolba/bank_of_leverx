@@ -1,5 +1,4 @@
-﻿using BankOfLeverx.Core.DTO;
-using BankOfLeverx.Domain.Models;
+﻿using BankOfLeverx.Domain.Models;
 
 namespace BankOfLeverx.Infrastructure.Data.Repositories
 {

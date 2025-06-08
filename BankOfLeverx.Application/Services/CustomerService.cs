@@ -47,7 +47,7 @@ namespace BankOfLeverx.Application.Services
                 Name = dto.Name,
                 Surname = dto.Surname,
                 Category = dto.Category,
-                Branch   = dto.Branch
+                Branch = dto.Branch
             };
             var cust = await _repository.UpdateAsync(customer);
             if (cust is null)
@@ -70,7 +70,7 @@ namespace BankOfLeverx.Application.Services
             if (dto.Surname is not null)
                 customer.Surname = dto.Surname;
             if (dto.Category is not null)
-                customer.Category = (int) dto.Category;
+                customer.Category = (int)dto.Category;
             if (dto.Branch is not null)
                 customer.Branch = (int)dto.Branch;
 

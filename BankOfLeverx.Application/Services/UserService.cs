@@ -115,9 +115,9 @@ namespace BankOfLeverx.Application.Services
         public async Task<string> AuthenticateAsync(string username, string password)
         {
             var user = await _repository.GetByUsernameAsync(username);
-            if(user is null)
-              throw new UnauthorizedAccessException("Invalid credentials.");
-            Console.WriteLine(user.Username+"aa");
+            if (user is null)
+                throw new UnauthorizedAccessException("Invalid credentials.");
+            Console.WriteLine(user.Username + "aa");
 
             var hasher = new PasswordHasher<User>();
             var result = hasher.VerifyHashedPassword(user, user.HashedPassword, password);

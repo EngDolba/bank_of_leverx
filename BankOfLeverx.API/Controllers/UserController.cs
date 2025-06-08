@@ -2,13 +2,11 @@
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
 {
-    [Authorize(Roles ="1")]
+    [Authorize(Roles = "1")]
     [ApiController]
     [Route("[controller]")]
     public class UsersController : ControllerBase
@@ -87,7 +85,7 @@ namespace BankOfLeverx.Controllers
         {
 
             var newUser = await _UserService.CreateAsync(User);
-            _logger.LogInformation("User with username: {Username} created successfully at: {DateTime}",User.Username,DateTime.Now);
+            _logger.LogInformation("User with username: {Username} created successfully at: {DateTime}", User.Username, DateTime.Now);
             return Ok(newUser);
         }
 
@@ -125,8 +123,8 @@ namespace BankOfLeverx.Controllers
             {
                 return NotFound($"User with key: {UserKey} not found");
             }
-            
-            
+
+
         }
 
         /// <summary>
@@ -156,7 +154,7 @@ namespace BankOfLeverx.Controllers
         {
             try
             {
-                
+
                 var updated = await _UserService.UpdateAsync(UserKey, User);
                 _logger.LogInformation("User with key: {UserKey} updated successfully at: {DateTime}", UserKey, DateTime.Now);
                 return Ok(updated);
@@ -207,15 +205,15 @@ namespace BankOfLeverx.Controllers
             {
 
                 var token = await _UserService.AuthenticateAsync(model.Username, model.Password);
-                _logger.LogInformation("User {Username} logged in successfully at: {DateTime}",model.Username,DateTime.Now);
+                _logger.LogInformation("User {Username} logged in successfully at: {DateTime}", model.Username, DateTime.Now);
                 return Ok(new { Token = token });
             }
             catch (UnauthorizedAccessException)
             {
-                _logger.LogWarning("Failed login attempt for user {Username} at: {DateTime}",model.Username,DateTime.Now);
+                _logger.LogWarning("Failed login attempt for user {Username} at: {DateTime}", model.Username, DateTime.Now);
                 return Unauthorized("Invalid credentials");
             }
-           
+
         }
 
     }

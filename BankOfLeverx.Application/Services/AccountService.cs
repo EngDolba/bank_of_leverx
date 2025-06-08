@@ -1,4 +1,5 @@
-﻿using BankOfLeverx.Application.Interfaces;
+﻿using BankOfLeverx.Application.Exceptions;
+using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
@@ -78,6 +79,22 @@ namespace BankOfLeverx.Application.Services
         public Task<bool> DeleteAsync(int key)
         {
             return _repository.DeleteAsync(key);
+        }
+        public async Task<Account?> AmountChange(int key, double amount)
+        {
+            var account = await GetByIdAsync(key);
+            if (account is null)
+            {
+                throw new KeyNotFoundException($"Account with key {key} not found.");
+            }
+            if (account.Balance < amount)
+                throw new InsufficientFundsException("Not enough funds");
+            account.Balance += amount;
+            var updatedAccount = await _repository.UpdateAsync(account);
+            return updatedAccount;
+
+
+
         }
     }
 }

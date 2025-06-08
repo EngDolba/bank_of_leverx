@@ -1,7 +1,6 @@
-﻿using BankOfLeverx.Infrastructure.Data.Repositories;
-using MediatR;
-using BankOfLeverx.Application.CQRS.Commands;
+﻿using BankOfLeverx.Application.CQRS.Commands;
 using BankOfLeverx.Application.Interfaces;
+using MediatR;
 
 
 namespace BankOfLeverx.Application.CQRS.Handlers

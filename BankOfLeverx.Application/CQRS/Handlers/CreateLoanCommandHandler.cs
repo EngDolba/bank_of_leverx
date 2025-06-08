@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
-using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
-using MediatR;
 using BankOfLeverx.Application.CQRS.Commands;
 using BankOfLeverx.Application.Interfaces;
-using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
+using MediatR;
 
 
 
@@ -23,7 +21,7 @@ namespace BankOfLeverx.Application.CQRS.Handlers
 
         public async Task<Loan> Handle(CreateLoanCommand request, CancellationToken cancellationToken)
         {
-         
+
             return await _service.CreateAsync(request.Loan);
         }
     }

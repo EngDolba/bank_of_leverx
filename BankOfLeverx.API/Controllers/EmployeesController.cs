@@ -147,12 +147,12 @@ namespace BankOfLeverx.Controllers
                 var updated = await _employeeService.UpdateAsync(employeeKey, employee);
                 return Ok(updated);
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
-            
-           
+
+
         }
 
         /// <summary>

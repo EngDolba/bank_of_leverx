@@ -32,8 +32,14 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
 
             var insertSql = @"
-                INSERT INTO krn.accounts ([Key], Number, PlanCode, Balance, CustomerKey)
-                VALUES (@Key, @Number, @PlanCode, @Balance, @CustomerKey)";
+                INSERT INTO krn.accounts (
+                    [Key], Number, PlanCode, Balance, CustomerKey,
+                    createdAt, createdBy, updatedAt, updatedBy
+                )
+                VALUES (
+                    @Key, @Number, @PlanCode, @Balance, @CustomerKey,
+                    SYSUTCDATETIME(), SYSTEM_USER, SYSUTCDATETIME(), SYSTEM_USER
+                )";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
@@ -55,7 +61,9 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                     Number = @Number,
                     PlanCode = @PlanCode,
                     Balance = @Balance,
-                    CustomerKey = @CustomerKey
+                    CustomerKey = @CustomerKey,
+                    updatedAt = SYSUTCDATETIME(),
+                    updatedBy = SYSTEM_USER
                 WHERE [Key] = @Key";
 
             var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new

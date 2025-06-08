@@ -1,8 +1,6 @@
-﻿using Azure.Core;
-using BankOfLeverx.Application.CQRS.Commands;
-using BankOfLeverx.Application.CQRS.Handlers;
+﻿using BankOfLeverx.Application.CQRS.Commands;
 using BankOfLeverx.Application.CQRS.Queries;
-using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Application.Exceptions;
 using BankOfLeverx.Application.Validators;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
@@ -48,7 +46,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{loanKey}", Name = "GetLoan")]
         public async Task<ActionResult<Loan>> Get(int loanKey)
         {
-            var loan = await _loanMediator.Send(new GetLoanByIdQuery(loanKey)); 
+            var loan = await _loanMediator.Send(new GetLoanByIdQuery(loanKey));
             if (loan is null)
             {
                 return NotFound($"Loan with Key {loanKey} not found.");
@@ -121,15 +119,15 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{loanKey}", Name = "PatchLoan")]
         public async Task<ActionResult> Patch(int loanKey, [FromBody] LoanPatchDTO loanPatch)
         {
-         
+
             try
             {
-                var updated = await _loanMediator.Send(new PatchLoanCommand(loanKey,loanPatch));
+                var updated = await _loanMediator.Send(new PatchLoanCommand(loanKey, loanPatch));
                 return Ok(updated);
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
-                return NotFound($"Employee with Key {loanKey} not found.");
+                return NotFound($"loan with Key {loanKey} not found.");
 
             }
         }
@@ -225,10 +223,25 @@ namespace BankOfLeverx.Controllers
         [HttpPost("{loanKey}", Name = "interestSubtract")]
         public async Task<ActionResult> subtractInterest(int loanKey)
         {
-            var subtracted = await _loanMediator.Send(new SubtractInterestCommand(loanKey));
-            if(subtracted is null)
-              return NotFound($"Loan with key: {loanKey} not found");
-            return Ok($"Interest sucessfully paid off from: {loanKey}");
+            try
+            {
+                var subtracted = await _loanMediator.Send(new SubtractInterestCommand(loanKey));
+                return Ok($"Interest sucessfully paid off from: {loanKey}");
+
+            }
+            catch (InsufficientFundsException)
+            {
+                return BadRequest($"insufficient balance on account tied with loan {loanKey}");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound($"Loan with Key {loanKey} not found.");
+            }
+            catch (LoanPaidOffException)
+            {
+                return BadRequest($"Loan with Key {loanKey} is already paid off.");
+            }
+            
 
         }
     }

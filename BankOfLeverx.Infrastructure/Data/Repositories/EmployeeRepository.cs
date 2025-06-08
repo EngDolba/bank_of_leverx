@@ -31,8 +31,14 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
 
             var insertSql = @"
-                INSERT INTO hr.employees ([key], name, surname, position, branch)
-                VALUES (@key, @name, @surname, @position, @branch)";
+                INSERT INTO hr.employees (
+                    [key], name, surname, position, branch,
+                    createdAt, createdBy, updatedAt, updatedBy
+                )
+                VALUES (
+                    @key, @name, @surname, @position, @branch,
+                    SYSUTCDATETIME(), SYSTEM_USER, SYSUTCDATETIME(), SYSTEM_USER
+                )";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
@@ -51,7 +57,12 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
         {
             var updateSql = @"
                 UPDATE hr.employees
-                SET name = @name, surname = @surname, position = @position, branch = @branch
+                SET name = @name, 
+                    surname = @surname, 
+                    position = @position, 
+                    branch = @branch,
+                    updatedAt = SYSUTCDATETIME(),
+                    updatedBy = SYSTEM_USER
                 WHERE [key] = @key";
 
             var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new
@@ -76,10 +87,12 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                 SET name = @name,
                     surname = @surname,
                     position = @position,
-                    branch = @branch
+                    branch = @branch,
+                    updatedAt = SYSUTCDATETIME(),
+                    updatedBy = SYSTEM_USER
                 WHERE [key] = @key";
 
-            var name = employeePatch.Name ;
+            var name = employeePatch.Name;
             var surname = employeePatch.Surname;
             var position = employeePatch.Position;
             var branch = employeePatch.Branch;

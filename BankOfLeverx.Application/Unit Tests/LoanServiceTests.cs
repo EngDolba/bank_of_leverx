@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
+using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Application.Services;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using BankOfLeverx.Infrastructure.Data.Repositories;
 using Moq;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 public class LoanServiceTests
@@ -34,15 +33,16 @@ public class LoanServiceTests
 
         var mockRepo = new Mock<ILoanRepository>();
         var mockMapper = new Mock<IMapper>();
+        var mockTransactionService = new Mock<ITransactionService>();
 
-        setupMocks(mockMapper, mockRepo, loanKey, originalLoan);
+        setupMocks(mockMapper, mockRepo, mockTransactionService, loanKey, originalLoan);
 
-        var service = new LoanService(mockRepo.Object, mockMapper.Object);
+        var service = new LoanService(mockRepo.Object, mockMapper.Object, mockTransactionService.Object);
 
         var result = await service.SubtractInterestAsync(loanKey);
 
         Assert.NotNull(result);
-        Assert.Equal(expectedAmount, result.Amount, 2); 
+        Assert.Equal(expectedAmount, result.Amount, 2);
 
         mockRepo.Verify(r => r.UpdateAsync(
             It.Is<Loan>(loan => Math.Abs(loan.Amount - expectedAmount) < 0.01)
@@ -72,10 +72,11 @@ public class LoanServiceTests
 
         var mockRepo = new Mock<ILoanRepository>();
         var mockMapper = new Mock<IMapper>();
+        var transactionServiceMock = new Mock<ITransactionService>();
 
-        setupMocks(mockMapper, mockRepo, loanKey, originalLoan);
+        setupMocks(mockMapper, mockRepo, transactionServiceMock, loanKey, originalLoan);
 
-        var service = new LoanService(mockRepo.Object, mockMapper.Object);
+        var service = new LoanService(mockRepo.Object, mockMapper.Object, transactionServiceMock.Object);
 
         var result = await service.SubtractInterestAsync(loanKey);
 
@@ -86,7 +87,7 @@ public class LoanServiceTests
             It.Is<Loan>(loan => Math.Abs(loan.Amount - expectedAmount) < 0.01)
         ), Times.Once);
     }
-    private void setupMocks(Mock<IMapper> mockMapper, Mock<ILoanRepository> mockRepo,int loanKey,Loan originalLoan)
+    private void setupMocks(Mock<IMapper> mockMapper, Mock<ILoanRepository> mockRepo, Mock<ITransactionService> mockTransaction, int loanKey, Loan originalLoan)
     {
 
         mockRepo.Setup(r => r.GetByIdAsync(loanKey)).ReturnsAsync(originalLoan);

@@ -1,5 +1,3 @@
-using System.Reflection.Metadata;
-
 namespace BankOfLeverx.Domain.Models
 {
     public class User

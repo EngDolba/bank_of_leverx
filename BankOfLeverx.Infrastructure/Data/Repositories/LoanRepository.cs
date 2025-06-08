@@ -1,5 +1,4 @@
-﻿using BankOfLeverx.Core.DTO;
-using BankOfLeverx.Domain.Models;
+﻿using BankOfLeverx.Domain.Models;
 using Dapper;
 using System.Data;
 
@@ -33,8 +32,16 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             var getKeySql = "SELECT NEXT VALUE FOR lnm.Loan_seq";
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
             var insertSql = @"
-                INSERT INTO lnm.loans ([Key], Amount, InitialAmount, StartDate, EndDate, Rate, Type, BankerKey, AccountKey)
-                VALUES (@Key, @Amount, @InitialAmount, @StartDate, @EndDate, @Rate, @Type, @BankerKey, @AccountKey)";
+                INSERT INTO lnm.loans (
+                    [Key], Amount, InitialAmount, StartDate, EndDate, 
+                    Rate, Type, BankerKey, AccountKey,
+                    createdAt, createdBy, updatedAt, updatedBy
+                )
+                VALUES (
+                    @Key, @Amount, @InitialAmount, @StartDate, @EndDate, 
+                    @Rate, @Type, @BankerKey, @AccountKey,
+                    SYSUTCDATETIME(), SYSTEM_USER, SYSUTCDATETIME(), SYSTEM_USER
+                )";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
@@ -64,7 +71,9 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                     Rate = @Rate,
                     Type = @Type,
                     BankerKey = @BankerKey,
-                    AccountKey = @AccountKey
+                    AccountKey = @AccountKey,
+                    updatedAt = SYSUTCDATETIME(),
+                    updatedBy = SYSTEM_USER
                 WHERE [Key] = @Key";
 
             var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new

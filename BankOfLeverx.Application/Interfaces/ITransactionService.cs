@@ -12,5 +12,7 @@ namespace BankOfLeverx.Application.Interfaces
         Task<Transaction?> UpdateAsync(int key, TransactionDTO dto);
         Task<Transaction?> PatchAsync(int key, TransactionPatchDTO dto);
         Task<bool> DeleteAsync(int key);
+        Task<Transaction?> processTransaction(int accountKey, double amount);
+
     }
 }

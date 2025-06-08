@@ -2,7 +2,6 @@
 using BankOfLeverx.Application.CQRS.Commands;
 using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
 using MediatR;
 
 
@@ -23,7 +22,7 @@ namespace BankOfLeverx.Application.CQRS.Handlers
         {
             var loan = _mapper.Map<Loan>(request.Loan);
             loan.Key = request.Key;
-            var updatedLoan = await _service.UpdateAsync(request.Key,request.Loan);
+            var updatedLoan = await _service.UpdateAsync(request.Key, request.Loan);
 
             if (updatedLoan is null)
                 throw new KeyNotFoundException($"Loan with key {request.Key} not found.");

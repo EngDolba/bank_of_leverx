@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BankOfLeverx.Application.Exceptions;
 using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
@@ -12,11 +13,13 @@ namespace BankOfLeverx.Application.Services
     {
         private readonly ILoanRepository _repository;
         private readonly IMapper _mapper;
+        private readonly ITransactionService _transactionService;
 
-        public LoanService(ILoanRepository repository, IMapper mapper)
+        public LoanService(ILoanRepository repository, IMapper mapper, ITransactionService transactionService)
         {
             _repository = repository;
             _mapper = mapper;
+            _transactionService = transactionService;
         }
 
         public Task<IEnumerable<Loan>> GetAllAsync()
@@ -72,13 +75,21 @@ namespace BankOfLeverx.Application.Services
             var loan = await GetByIdAsync(key);
             if (loan is null)
                 throw new KeyNotFoundException($"Loan with key {key} not found.");
-            double interest = loan.InitialAmount * (loan.Rate/1200);
+            double interest = loan.InitialAmount * (loan.Rate / 1200);
             double amt = Math.Max(loan.Amount - interest, 0);
-            Console.WriteLine(interest+"int");
-            Console.WriteLine(amt + "amt");
+            interest  = Math.Min(amt, interest);
+            if (interest == 0)
+            {                
+                throw new LoanPaidOffException("loan is already paid Off");
+            }
             loan.Amount = amt;
+            if (loan.Amount == 0)
+            {
+                loan.EndDate = DateTime.Now;
+            }
+            var transaction = await _transactionService.processTransaction(loan.AccountKey, -interest);
             var loanDTO = _mapper.Map<LoanDTO>(loan);
-            var updatedLoan = await UpdateAsync(key, loanDTO );
+            var updatedLoan = await UpdateAsync(key, loanDTO);
             return updatedLoan;
         }
     }

@@ -34,8 +34,14 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
 
             var insertSql = @"
-                INSERT INTO krn.Users ([Key], username, hashedPassword, Role)
-                VALUES (@Key, @username, @hashedPassword, @Role)";
+                INSERT INTO krn.Users (
+                    [Key], username, hashedPassword, Role,
+                    createdAt, createdBy, updatedAt, updatedBy
+                )
+                VALUES (
+                    @Key, @username, @hashedPassword, @Role,
+                    SYSUTCDATETIME(), SYSTEM_USER, SYSUTCDATETIME(), SYSTEM_USER
+                )";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
@@ -44,7 +50,7 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                 hashedPassword = user.HashedPassword,
                 Role = user.Role
             });
-            user. Key = newKey;
+            user.Key = newKey;
             return user;
         }
 
@@ -54,7 +60,9 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                 UPDATE krn.Users SET
                     username = @username,
                     hashedPassword = @hashedPassword,
-                    Role = @Role
+                    Role = @Role,
+                    updatedAt = SYSUTCDATETIME(),
+                    updatedBy = SYSTEM_USER
                 WHERE [Key] = @Key";
 
             var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new
@@ -77,12 +85,13 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
 
         public async Task<User?> GetByUsernameAsync(string username)
         {
-            var getSql = "SELECT [Key], username, hashedPassword, Role FROM krn.Users WHERE username = @Username";
+            var getSql = @"SELECT [Key], username, hashedPassword, Role 
+                          FROM krn.Users 
+                          WHERE username = @Username";
             var user = await _dbConnection.QueryFirstOrDefaultAsync<User>(getSql, new
             {
                 Username = username
             });
-            Console.WriteLine(user.Role+"rep");
             return user;
         }
     }

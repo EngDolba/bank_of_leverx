@@ -9,10 +9,12 @@ namespace BankOfLeverx.Application.Services
     public class TransactionService : ITransactionService
     {
         private readonly ITransactionRepository _repository;
+        private readonly IAccountService _accountService;
 
-        public TransactionService(ITransactionRepository repository)
+        public TransactionService(ITransactionRepository repository, IAccountService accountService)
         {
             _repository = repository;
+            _accountService = accountService;
         }
 
         public Task<IEnumerable<Transaction>> GetAllAsync()
@@ -65,7 +67,7 @@ namespace BankOfLeverx.Application.Services
         {
             var transaction = await _repository.GetByIdAsync(key);
             if (transaction is null)
-                throw new KeyNotFoundException($"Transaction with Key {key} not found.");   
+                throw new KeyNotFoundException($"Transaction with Key {key} not found.");
 
             if (dto.AccountKey is not null)
                 transaction.AccountKey = dto.AccountKey.Value;
@@ -86,6 +88,27 @@ namespace BankOfLeverx.Application.Services
         public Task<bool> DeleteAsync(int key)
         {
             return _repository.DeleteAsync(key);
+
+        }
+
+        public async Task<Transaction?> processTransaction(int accountKey, double amount)
+        {
+            var account = await _accountService.GetByIdAsync(accountKey);
+            if (account is null)
+            {
+                throw new KeyNotFoundException($"Account with Key {accountKey} not found.");
+            }
+            account = await _accountService.AmountChange(accountKey, amount);
+            var transaction = await CreateAsync(new TransactionDTO
+            {
+                AccountKey = accountKey,
+                IsDebit = amount < 0,
+                Category = "Transaction",
+                Amount = amount,
+                Date = DateTime.Now,
+                Comment = "Processed transaction"
+            });
+            return transaction;
         }
     }
 }
