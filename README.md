@@ -13,4 +13,8 @@ This backend application serves as a core banking system backend, implementing t
 
 - ## Technologies Used
 
-- .NET 8 
+- .NET 8
+
+### Running
+
+For application to run correctly, .NET Environment should be set up and environment variables "JWTIssuer", "JWTExpiration", "JWTAudience" and "JWTKey" should be accessible as they are necessary for JWT Authentication.
