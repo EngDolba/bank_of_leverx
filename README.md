@@ -17,4 +17,6 @@ This backend application serves as a core banking system backend, implementing t
 
 ### Running
 
-For application to run correctly, .NET Environment should be set up and environment variables "JWTIssuer", "JWTExpiration", "JWTAudience" and "JWTKey" should be accessible as they are necessary for JWT Authentication.
+For application to run correctly, few things must be considered:
+- Environment variables "JWTIssuer", "JWTExpiration", "JWTAudience" and "JWTKey" should be accessible as they are necessary for JWT Authentication.
+- User should run createDatabase and alter_database scripts in database so it has correct structure.
