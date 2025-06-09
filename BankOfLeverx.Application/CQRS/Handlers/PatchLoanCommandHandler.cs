@@ -1,31 +1,31 @@
 ﻿using AutoMapper;
-using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
-using MediatR;
 using BankOfLeverx.Application.CQRS.Commands;
+using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Core.DTO;
+using BankOfLeverx.Domain.Models;
+using MediatR;
 
 namespace BankOfLeverx.Application.CQRS.Handlers
 {
     public class PatchLoanCommandHandler : IRequestHandler<PatchLoanCommand, Loan?>
     {
-        private readonly ILoanRepository _repository;
+        private readonly ILoanService _service;
         private readonly IMapper _mapper;
 
-        public PatchLoanCommandHandler(ILoanRepository repository, IMapper mapper)
+        public PatchLoanCommandHandler(ILoanService service, IMapper mapper)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
         }
 
         public async Task<Loan?> Handle(PatchLoanCommand request, CancellationToken cancellationToken)
         {
-            var loan = await _repository.GetByIdAsync(request.Key);
+            var loan = await _service.GetByIdAsync(request.Key);
             if (loan is null)
                 throw new KeyNotFoundException($"Loan with key {request.Key} not found.");
-
-            _mapper.Map(request.LoanPatch, loan);
-
-            return await _repository.UpdateAsync(loan);
+            var ln=  _mapper.Map<LoanDTO>(loan);
+            ln = _mapper.Map(request.LoanPatch, ln);
+            return await _service.UpdateAsync(request.Key, ln);
         }
     }
 }

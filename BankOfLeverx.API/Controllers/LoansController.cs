@@ -1,28 +1,31 @@
-﻿using Azure.Core;
+﻿using BankOfLeverx.Application.CQRS.Commands;
+using BankOfLeverx.Application.CQRS.Queries;
+using BankOfLeverx.Application.Exceptions;
 using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Application.Validators;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BankOfLeverx.Application.CQRS.Handlers;
-using BankOfLeverx.Application.CQRS.Queries;
-using BankOfLeverx.Application.CQRS.Commands;
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class LoansController : ControllerBase
     {
         private readonly IMediator _loanMediator;
         private readonly LoanValidator _loanValidator;
+        private readonly ILoanPaymentService _loanPaymentService;
 
 
-        public LoansController(IMediator loanService, LoanValidator loanValidator)
+        public LoansController(IMediator loanService, LoanValidator loanValidator,ILoanPaymentService loanPaymentService)
         {
             _loanMediator = loanService;
             _loanValidator = loanValidator;
+            _loanPaymentService = loanPaymentService;
         }
 
         /// <summary>
@@ -46,7 +49,7 @@ namespace BankOfLeverx.Controllers
         [HttpGet("{loanKey}", Name = "GetLoan")]
         public async Task<ActionResult<Loan>> Get(int loanKey)
         {
-            var loan = await _loanMediator.Send(new GetLoanByIdQuery(loanKey)); 
+            var loan = await _loanMediator.Send(new GetLoanByIdQuery(loanKey));
             if (loan is null)
             {
                 return NotFound($"Loan with Key {loanKey} not found.");
@@ -119,15 +122,15 @@ namespace BankOfLeverx.Controllers
         [HttpPatch("{loanKey}", Name = "PatchLoan")]
         public async Task<ActionResult> Patch(int loanKey, [FromBody] LoanPatchDTO loanPatch)
         {
-         
+
             try
             {
-                var updated = await _loanMediator.Send(new PatchLoanCommand(loanKey,loanPatch));
+                var updated = await _loanMediator.Send(new PatchLoanCommand(loanKey, loanPatch));
                 return Ok(updated);
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
-                return NotFound($"Employee with Key {loanKey} not found.");
+                return NotFound($"loan with Key {loanKey} not found.");
 
             }
         }
@@ -201,6 +204,51 @@ namespace BankOfLeverx.Controllers
                 return NotFound($"Loan with key: {loanKey} not found");
             }
             return Ok($"Loan with key: {loanKey} deleted");
+        }
+        /// <summary>
+        /// subtract interest from a loan by key.
+        /// </summary>
+        ///
+        /// <param name="loanKey">
+        /// The unique key of the loan to delete.
+        /// </param>
+        ///
+        /// <returns>
+        /// Status message about the interest payoff.
+        /// </returns>
+        ///
+        /// <response code="200">
+        /// interest successfully paid off.
+        /// </response>
+        /// <response code="404">
+        /// Loan not found.
+        /// </response>
+        /// <response code="422">
+        /// request does not make sense on business level
+        /// </response>
+        [HttpPost("{loanKey}", Name = "interestSubtract")]
+        public async Task<ActionResult> subtractInterest(int loanKey)
+        {
+            try
+            {
+                var subtracted = await _loanPaymentService.SubtractInterestAsync(loanKey);
+                return Ok($"Interest sucessfully paid off from: {loanKey}");
+
+            }
+            catch (InsufficientFundsException)
+            {
+                return UnprocessableEntity($"insufficient balance on account tied with loan {loanKey}");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound($"Loan with Key {loanKey} not found.");
+            }
+            catch (LoanPaidOffException)
+            {
+                return UnprocessableEntity($"Loan with Key {loanKey} is already paid off.");
+            }
+            
+
         }
     }
 }

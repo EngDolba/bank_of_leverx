@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BankOfLeverx.Infrastructure.Data.Models;
+﻿namespace BankOfLeverx.Infrastructure.Data.Models;
 
 public class TransactionDataModel
 

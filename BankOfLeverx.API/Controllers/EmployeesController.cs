@@ -1,10 +1,12 @@
 using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class EmployeesController : ControllerBase
@@ -145,12 +147,12 @@ namespace BankOfLeverx.Controllers
                 var updated = await _employeeService.UpdateAsync(employeeKey, employee);
                 return Ok(updated);
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
                 return NotFound($"Employee with Key {employeeKey} not found.");
             }
-            
-           
+
+
         }
 
         /// <summary>

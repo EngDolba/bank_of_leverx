@@ -1,5 +1,4 @@
 ﻿// Infrastructure/Data/Repositories/IEmployeeRepository.cs
-using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
 
 namespace BankOfLeverx.Infrastructure.Data.Repositories

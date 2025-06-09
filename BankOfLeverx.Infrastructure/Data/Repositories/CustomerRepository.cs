@@ -21,7 +21,8 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
 
         public async Task<Customer?> GetByIdAsync(int key)
         {
-            var sql = @"SELECT [Key], Name, Surname, Category, Branch FROM krn.customers WHERE [Key] = @key";
+            var sql = @"SELECT [Key], Name, Surname, Category, Branch 
+                        FROM krn.customers WHERE [Key] = @key";
             return await _dbConnection.QueryFirstOrDefaultAsync<Customer>(sql, new { key });
         }
 
@@ -31,8 +32,14 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
 
             var insertSql = @"
-                INSERT INTO krn.customers ([Key], Name, Surname, Category, Branch)
-                VALUES (@Key, @Name, @Surname, @Category, @Branch)";
+                INSERT INTO krn.customers (
+                    [Key], Name, Surname, Category, Branch,
+                    createdAt, createdBy, updatedAt, updatedBy
+                )
+                VALUES (
+                    @Key, @Name, @Surname, @Category, @Branch,
+                    SYSUTCDATETIME(), SYSTEM_USER, SYSUTCDATETIME(), SYSTEM_USER
+                )";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
@@ -40,7 +47,7 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                 Name = customer.Name,
                 Surname = customer.Surname,
                 Category = customer.Category,
-                Branch = customer.Branch // int
+                Branch = customer.Branch
             });
 
             customer.Key = newKey;
@@ -54,7 +61,9 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                     Name = @Name,
                     Surname = @Surname,
                     Category = @Category,
-                    Branch = @Branch
+                    Branch = @Branch,
+                    updatedAt = SYSUTCDATETIME(),
+                    updatedBy = SYSTEM_USER
                 WHERE [Key] = @Key";
 
             var affectedRows = await _dbConnection.ExecuteAsync(updateSql, new
@@ -63,7 +72,7 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                 Name = customer.Name,
                 Surname = customer.Surname,
                 Category = customer.Category,
-                Branch = customer.Branch 
+                Branch = customer.Branch
             });
 
             return affectedRows > 0 ? await GetByIdAsync((int)customer.Key) : null;

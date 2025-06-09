@@ -1,10 +1,12 @@
 ﻿using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class CustomersController : ControllerBase
@@ -116,8 +118,8 @@ namespace BankOfLeverx.Controllers
             {
                 return NotFound($"Customer with key: {customerKey} not found");
             }
-            
-            
+
+
         }
 
         /// <summary>
@@ -181,6 +183,7 @@ namespace BankOfLeverx.Controllers
             var deleted = await _customerService.DeleteAsync(customerKey);
             if (!deleted)
             {
+                _logger.LogWarning($"Customer with key: {customerKey} not found for deletion.");
                 return NotFound($"Customer with key: {customerKey} not found");
             }
             return Ok($"Customer with key: {customerKey} deleted");

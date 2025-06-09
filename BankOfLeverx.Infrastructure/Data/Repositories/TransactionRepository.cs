@@ -1,13 +1,9 @@
-﻿// TransactionRepository.cs
-using BankOfLeverx.Core.DTO;
-using BankOfLeverx.Domain.Models;
+﻿using BankOfLeverx.Domain.Models;
 using Dapper;
 using System.Data;
 
 namespace BankOfLeverx.Infrastructure.Data.Repositories
 {
-  
-
     public class TransactionRepository : ITransactionRepository
     {
         private readonly IDbConnection _dbConnection;
@@ -37,8 +33,14 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
             var newKey = await _dbConnection.ExecuteScalarAsync<int>(getKeySql);
 
             var insertSql = @"
-                INSERT INTO krn.transactions ([Key], AccountKey, IsDebit, Category, Amount, Date, Comment)
-                VALUES (@Key, @AccountKey, @IsDebit, @Category, @Amount, @Date, @Comment)";
+                INSERT INTO krn.transactions (
+                    [Key], AccountKey, IsDebit, Category, Amount, Date, Comment,
+                    createdAt, createdBy, updatedAt, updatedBy
+                )
+                VALUES (
+                    @Key, @AccountKey, @IsDebit, @Category, @Amount, @Date, @Comment,
+                    SYSUTCDATETIME(), SYSTEM_USER, SYSUTCDATETIME(), SYSTEM_USER
+                )";
 
             await _dbConnection.ExecuteAsync(insertSql, new
             {
@@ -64,7 +66,9 @@ namespace BankOfLeverx.Infrastructure.Data.Repositories
                     Category = @Category,
                     Amount = @Amount,
                     Date = @Date,
-                    Comment = @Comment
+                    Comment = @Comment,
+                    updatedAt = SYSUTCDATETIME(),
+                    updatedBy = SYSTEM_USER
                 WHERE [Key] = @Key";
 
             var affectedRows = await _dbConnection.ExecuteAsync(updateSql, transaction);

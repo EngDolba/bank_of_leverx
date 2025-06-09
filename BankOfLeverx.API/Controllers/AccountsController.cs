@@ -1,11 +1,13 @@
-﻿using BankOfLeverx.Core.DTO;
+﻿using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using BankOfLeverx.Application.Interfaces;
 
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class AccountsController : ControllerBase
@@ -115,7 +117,7 @@ namespace BankOfLeverx.Controllers
             }
             catch (KeyNotFoundException)
             {
-                return NotFound($"Account with Key {AccountKey} not found."); 
+                return NotFound($"Account with Key {AccountKey} not found.");
 
             }
         }
@@ -146,11 +148,11 @@ namespace BankOfLeverx.Controllers
         public async Task<ActionResult<Account>> Put(int AccountKey, [FromBody] AccountDTO Account)
         {
             try
-            { 
+            {
                 var updated = await _accountService.UpdateAsync(AccountKey, Account);
                 return Ok(updated);
             }
-            catch(KeyNotFoundException)
+            catch (KeyNotFoundException)
             {
                 return NotFound($"Account with Key {AccountKey} not found.");
             }

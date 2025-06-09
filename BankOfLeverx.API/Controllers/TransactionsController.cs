@@ -1,19 +1,21 @@
-﻿using BankOfLeverx.Application.Services;
+﻿using BankOfLeverx.Application.Interfaces;
 using BankOfLeverx.Core.DTO;
 using BankOfLeverx.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankOfLeverx.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TransactionsController : ControllerBase
     {
-        private readonly TransactionService _transactionService;
+        private readonly ITransactionService _transactionService;
         private readonly ILogger<TransactionsController> _logger;
 
         public TransactionsController(
-            TransactionService transactionService,
+            ITransactionService transactionService,
             ILogger<TransactionsController> logger)
         {
             _transactionService = transactionService;
@@ -117,7 +119,7 @@ namespace BankOfLeverx.Controllers
             catch (KeyNotFoundException
             )
             {
-               return NotFound($"Transaction with Key {TransactionKey} not found:");
+                return NotFound($"Transaction with Key {TransactionKey} not found:");
             }
         }
 

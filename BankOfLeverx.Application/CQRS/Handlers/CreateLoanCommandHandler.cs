@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using BankOfLeverx.Domain.Models;
-using BankOfLeverx.Infrastructure.Data.Repositories;
-using MediatR;
 using BankOfLeverx.Application.CQRS.Commands;
+using BankOfLeverx.Application.Interfaces;
+using BankOfLeverx.Domain.Models;
+using MediatR;
 
 
 
@@ -10,19 +10,19 @@ namespace BankOfLeverx.Application.CQRS.Handlers
 {
     public class CreateLoanCommandHandler : IRequestHandler<CreateLoanCommand, Loan>
     {
-        private readonly ILoanRepository _repository;
+        private readonly ILoanService _service;
         private readonly IMapper _mapper;
 
-        public CreateLoanCommandHandler(ILoanRepository repository, IMapper mapper)
+        public CreateLoanCommandHandler(ILoanService service, IMapper mapper)
         {
-            _repository = repository;
+            _service = service;
             _mapper = mapper;
         }
 
         public async Task<Loan> Handle(CreateLoanCommand request, CancellationToken cancellationToken)
         {
-            var loan = _mapper.Map<Loan>(request.Loan);
-            return await _repository.CreateAsync(loan);
+
+            return await _service.CreateAsync(request.Loan);
         }
     }
 }
