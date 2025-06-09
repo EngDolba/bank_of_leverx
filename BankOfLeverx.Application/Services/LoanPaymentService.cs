@@ -28,7 +28,8 @@ namespace BankOfLeverx.Application.Services
             if (loan is null)
                 throw new KeyNotFoundException($"Loan with key {key} not found.");
             double interest = _loanService.calculateInterest(loan);
-            var transaction = await _transactionService.processTransaction(loan.AccountKey, -interest);
+            await _transactionService.processTransaction(loan.AccountKey, -interest);
+            loan.Amount = Math.Max(loan.Amount - interest, 0);
             var loanDTO = _mapper.Map<LoanDTO>(loan);
             var updatedLoan = await _loanService.UpdateAsync(key, loanDTO);
             return updatedLoan;

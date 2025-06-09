@@ -15,11 +15,10 @@ namespace BankOfLeverx.Application.Services
         private readonly IMapper _mapper;
         private readonly ITransactionService _transactionService;
 
-        public LoanService(ILoanRepository repository, IMapper mapper, ITransactionService transactionService)
+        public LoanService(ILoanRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _transactionService = transactionService;
         }
 
         public Task<IEnumerable<Loan>> GetAllAsync()
